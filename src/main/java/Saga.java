@@ -1,5 +1,5 @@
 public class Saga {
-    private String id ;
+    private String idSaga ;
     private String titulo;
     private double ingresosTotales;
 }
