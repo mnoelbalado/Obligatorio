@@ -1,5 +1,4 @@
 
-
 public class Rating {
     String idPelciula;
     double rating;

@@ -1,5 +1,5 @@
 public class Usuario {
-        String idUsuario;
-        String nombre;
+       private String idUsuario;
+       private String nombre;
 
 }
