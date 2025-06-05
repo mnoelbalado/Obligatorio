@@ -1,7 +1,9 @@
 import um.edu.uy.tads.linkedList.MyLinkedList;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.io.IOException;
+import java.util.List;
 
-import java.io.File;
-import java.util.Scanner;
 
 
 public class UMovie {
@@ -13,20 +15,20 @@ public class UMovie {
         datos = new MyLinkedList<>();
     }
 
-    //Metodo para cargar los datos
     public void cargarDatos() {
         try {
-            Scanner s = new Scanner(new File("src/DATASETS v2/movies_metadata.csv"));
-            while (s.hasNextLine()) {
-                datos.add(s.nextLine());
+            List<String> lines = Files.readAllLines(Paths.get("src/DATASETS v2/movies_metadata.csv"));
+            for (String line : lines) {
+                datos.add(line);
             }
-            s.close();
             System.out.println("Datos cargados: " + datos.size());
-        } catch (Exception e) {
+        } catch (IOException e) {
             System.out.println("Error: " + e.getMessage());
         }
-
     }
+
+    //Metodo para cargar los datos
+
 
     public static void main(String[] args) {
         UMovie app = new UMovie();
