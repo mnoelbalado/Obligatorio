@@ -1,3 +1,5 @@
+package um.edu.uy.entities;
+
 import um.edu.uy.tads.linkedList.MyLinkedList;
 import java.nio.file.Files;
 import java.nio.file.Paths;
