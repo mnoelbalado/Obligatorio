@@ -1,9 +1,9 @@
-import java.util.LinkedList;
+import um.edu.uy.tads.linkedList.MyLinkedList;
 
 public class Pelicula {
-    String idPelicula;
-    String titulo;
-    String idiomaOriginal;
-    double ingresos;
-    LinkedList<String> generos;
+    private String idPelicula;
+    private String titulo;
+    private String idiomaOriginal;
+    private double ingresos;
+    private MyLinkedList<String> generos;
 }

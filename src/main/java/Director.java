@@ -1,3 +1,5 @@
 public class Director {
-    String nombre;
+    private String nombre;
+    private int cantidadPeliculas;
+    private int cantidadCalificaciones;
 }
