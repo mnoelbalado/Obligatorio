@@ -41,4 +41,4 @@ bin/
 ### Mac OS ###
 .DS_Store
 
-src/DATASETS v2/**
+src/resources/DATASETS v2/**
