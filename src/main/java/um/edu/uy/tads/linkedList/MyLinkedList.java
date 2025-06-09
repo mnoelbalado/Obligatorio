@@ -1,6 +1,7 @@
 package um.edu.uy.tads.linkedList;
+import um.edu.uy.exceptions.*;
 
-public class MyLinkedList <T> implements LinkedList<T>{
+public class MyLinkedList<T> implements LinkedList<T> {
 
     private class Node {
         T data;
@@ -37,13 +38,15 @@ public class MyLinkedList <T> implements LinkedList<T>{
     }
 
     @Override
-    public boolean remove(T element) {
-        if (head == null) return false;
+    public void remove(T element) throws ElementNotFound {
+        if (head == null) {
+            throw new ElementNotFound("La lista está vacía. No se puede eliminar.");
+        }
 
         if (head.data.equals(element)) {
             head = head.next;
             size--;
-            return true;
+            return;
         }
 
         Node current = head;
@@ -51,16 +54,19 @@ public class MyLinkedList <T> implements LinkedList<T>{
             current = current.next;
         }
 
-        if (current.next == null) return false;
+        if (current.next == null) {
+            throw new ElementNotFound("Elemento no encontrado en la lista.");
+        }
 
         current.next = current.next.next;
         size--;
-        return true;
     }
 
     @Override
-    public T get(int index) {
-        if (index < 0 || index >= size) throw new IndexOutOfBoundsException(); //validacion del indice
+    public T get(int index) throws InvalidIndex {
+        if (index < 0 || index >= size) {
+            throw new InvalidIndex("Índice fuera de rango: " + index);
+        }
 
         Node current = head;
         for (int i = 0; i < index; i++)
@@ -94,5 +100,4 @@ public class MyLinkedList <T> implements LinkedList<T>{
         head = null;
         size = 0;
     }
-
 }
