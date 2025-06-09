@@ -1,8 +1,10 @@
 package um.edu.uy.tads.hashTable;
 
 import um.edu.uy.tads.linkedList.MyLinkedList;
+import um.edu.uy.exceptions.*;
 
-public class MyHashTable <K, V> implements HashTable<K, V> {
+public class MyHashTable<K, V> implements HashTable<K, V> {
+
     private static class Entry<K, V> {
         K key;
         V value;
@@ -17,7 +19,11 @@ public class MyHashTable <K, V> implements HashTable<K, V> {
     private int capacity;  //cantidad de "buckets"
     private int size;      //total de elementos insertados
 
-    @SuppressWarnings("unchecked") //
+    // Java no permite crear arreglos de tipos genéricos directamente.
+    // Por eso usamos un arreglo de MyLinkedList sin tipo específico.
+    // Este cast es seguro porque controlamos que siempre se guarden listas válidas.
+    //POR ESO PONEMOS EL SUPPRESS WARNING que "silencia" esta advertencia
+    @SuppressWarnings("unchecked")
     public MyHashTable(int capacity) {
         this.capacity = capacity;
         buckets = new MyLinkedList[capacity];
@@ -32,24 +38,24 @@ public class MyHashTable <K, V> implements HashTable<K, V> {
     }
 
     @Override
-    public void put(K key, V value) {
+    public void put(K key, V value) throws ElementAlreadyExists {
         int index = hash(key);
         MyLinkedList<Entry<K, V>> bucket = buckets[index];
 
         for (int i = 0; i < bucket.size(); i++) {
             Entry<K, V> entry = bucket.get(i);
             if (entry.key.equals(key)) {
-                entry.value = value; //si la clave ya existe, se actualiza el valor
-                return;
+                //si la clave ya existe, se lanza excepción
+                throw new ElementAlreadyExists("La clave '" + key + "' ya existe en la tabla.");
             }
         }
 
-        bucket.add(new Entry<>(key, value)); //si no existe, se agrega una nueva entrada
+        bucket.add(new Entry<>(key, value));
         size++;
     }
 
     @Override
-    public V get(K key) {
+    public V get(K key) throws ValueNoExists {
         int index = hash(key);
         MyLinkedList<Entry<K, V>> bucket = buckets[index];
 
@@ -60,29 +66,38 @@ public class MyHashTable <K, V> implements HashTable<K, V> {
             }
         }
 
-        return null; //no se encontró la clave
+        throw new ValueNoExists("La clave '" + key + "' no existe en la tabla.");
     }
 
     @Override
-    public boolean remove(K key) {
+    public boolean remove(K key) throws ValueNoExists {
         int index = hash(key);
         MyLinkedList<Entry<K, V>> bucket = buckets[index];
 
         for (int i = 0; i < bucket.size(); i++) {
             Entry<K, V> entry = bucket.get(i);
             if (entry.key.equals(key)) {
-                bucket.remove(entry); //elimina la entrada si la clave coincide
+                bucket.remove(entry);
                 size--;
                 return true;
             }
         }
 
-        return false;
+        throw new ValueNoExists("No se puede eliminar: la clave '" + key + "' no existe.");
     }
 
     @Override
     public boolean containsKey(K key) {
-        return get(key) != null;
+        int index = hash(key);
+        MyLinkedList<Entry<K, V>> bucket = buckets[index];
+
+        for (int i = 0; i < bucket.size(); i++) {
+            if (bucket.get(i).key.equals(key)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     @Override
@@ -94,5 +109,4 @@ public class MyHashTable <K, V> implements HashTable<K, V> {
     public boolean isEmpty() {
         return size == 0;
     }
-
 }

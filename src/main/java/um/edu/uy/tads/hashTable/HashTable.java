@@ -1,10 +1,16 @@
 package um.edu.uy.tads.hashTable;
+import um.edu.uy.exceptions.*;
 
-public interface HashTable <K, V> {
-    void put(K key, V value); //inserta o actualiza un par clave-valor
-    V get(K key); //devuelve el valor asociado a la clave
-    boolean remove(K key); //elimina el par clave-valor
-    boolean containsKey(K key); //verifica si una clave existe
-    int size(); //devuelve la cantidad de elementos
-    boolean isEmpty(); //verifica si la tabla está vacía
+public interface HashTable<K, V> {
+    void put(K key, V value) throws ElementAlreadyExists; //inserta un nuevo par clave_valor, y lanza excepcion ElementAlreadyExists si la clave ya existe en la tabla
+
+    V get(K key) throws ValueNoExists; //devuelve el valor asociado a una clave, lanza valueNoExists si la clave no esta en la tabla
+
+    boolean remove(K key) throws ValueNoExists; //elimina la entrada asociada a una clave, y lanza ValueNoExists si la clave no esta en la tabla
+
+    boolean containsKey(K key); //verifica si la tabla contiene una clave especifica
+
+    int size(); //devuelve la cantidad de elementos almacenados
+
+    boolean isEmpty(); //verifica si la tabla esta vacia
 }
