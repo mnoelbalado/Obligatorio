@@ -1,112 +1,163 @@
 package um.edu.uy.tads.heap;
-import um.edu.uy.exceptions.*;
+import um.edu.uy.exceptions.EmptyHeapException;
 
 
-public class MyHeap<T extends Comparable<T>> implements Heap<T> {
+public class MyHeap<K extends Comparable<K>, T> implements Heap<K, T> {
+    private int size;
+    private HeapNode<K, T>[] heap;
+    private boolean isMin;
 
-    private T[] arreglo; //aca se guarda el heap
-    private int cantidad; //cant actual de elementos
-    private static final int TAMANIO_INICIAL = 10; //tamaño inicial del arreglo del heap; se expande si se llena
-
-    @SuppressWarnings("unchecked")
-    public MyHeap() {
-        arreglo = (T[]) new Comparable[TAMANIO_INICIAL];
-        cantidad = 0;
+    public MyHeap(boolean isMin) {
+        this.isMin = isMin;
+        this.size = 0;
+        this.heap = new HeapNode[10]; // Initial size can be adjusted as needed
     }
 
-    @Override
-    public void insert(T elemento) {
-        if (cantidad == arreglo.length) {
-            agrandar(); //si no entra más, agrando el arreglo
+    public MyHeap(boolean isMin, K[] array) {
+        this.isMin = isMin;
+        this.size = array.length;
+        this.heap = new HeapNode[array.length];
+
+        // Se insertan los elementos del heap al array
+        for (int i = 0; i < array.length; i++) {
+            heap[i] = new HeapNode<>(array[i], null);
         }
-        arreglo[cantidad] = elemento; //lo ponemos al final
-        moverHaciaArriba(cantidad);  //lo subimos hasta su lugar correcto
-        cantidad++;
+
+        // Ordenar Heap
+        for (int i = size / 2 - 1; i >= 0; i--) {
+            heapify(i);
+        }
     }
 
-    @Override
-    public T peek() throws HeapEmptyException {
+    public void put(K key, T value) {
+        if (size >= heap.length - 1) {
+            resize();
+        }
+
+        HeapNode<K, T> nodoNuevo = new HeapNode<>(key, value);
+        heap[size] = nodoNuevo;
+        size++;
+
+        // Vuelve a ordenar
+        int posicion = size - 1;
+        while (posicion > 0) {
+            int posicionPadre = (posicion - 1) / 2;
+            boolean comp;
+            if (this.isMin){
+                comp = compare(heap[posicion].getKey(), heap[posicionPadre].getKey()) < 0;
+            }
+            else{
+                comp = compare(heap[posicion].getKey(), heap[posicionPadre].getKey()) > 0;
+            }
+            if (comp) {
+                // Va a estar siempre intercambiando posicion con el padre hasta que termine el while
+                swap(posicion, posicionPadre);
+                posicion = posicionPadre;
+            } else {
+                break;
+            }
+        }
+    }
+
+    /** Borra la raiz, si es maxheap el mas grande, si es minheap el mas chico **/
+    public T delete() throws EmptyHeapException {
         if (isEmpty()) {
-            throw new HeapEmptyException("El heap está vacío, no hay mínimo.");
-        }
-        return arreglo[0]; //el mínimo siempre está en la posición 0 pq es un MIN HEAP
-    }
-
-    @Override
-    public T removeMin() throws HeapEmptyException {
-        if (isEmpty()) {
-            throw new HeapEmptyException("El heap está vacío, no se puede eliminar.");
+            throw new EmptyHeapException("Heap esta vacio");
         }
 
-        T minimo = arreglo[0]; //guardamos el mínimo
-        arreglo[0] = arreglo[cantidad - 1]; //ponemos el último en la raíz
-        cantidad--;
-        moverHaciaAbajo(0); //lo bajamos hasta su lugar correcto
-        return minimo;
+        T rootValue = heap[0].getValue();
+        heap[0] = heap[size - 1];
+        heap[size - 1] = null;
+        size--;
+
+        // Si no se termino de borrar lo ordena
+        if (size > 0) {
+            heapify(0);
+        }
+
+        return rootValue;
     }
 
-    @Override
-    public boolean isEmpty() {
-        return cantidad == 0;
-    }
-
-    @Override
     public int size() {
-        return cantidad;
+        return size;
+    }
+
+    public boolean isEmpty() {
+        return size == 0;
+    }
+
+    private void heapify(int index) {
+        int hijoIz = 2 * index + 1;
+        int hijoDer = 2 * index + 2;
+        int extremo = index; // Mayor o menor depende de isMin
+
+        if (isMin) { // min heap
+            if (hijoIz < size && compare(heap[hijoIz].getKey(), heap[extremo].getKey()) < 0) {
+                extremo = hijoIz;
+            }
+            if (hijoDer < size && compare(heap[hijoDer].getKey(), heap[extremo].getKey()) < 0) {
+                extremo = hijoDer;
+            }
+        } else { // max heap
+            if (hijoIz < size && compare(heap[hijoIz].getKey(), heap[extremo].getKey()) > 0) {
+                extremo = hijoIz;
+            }
+            if (hijoDer < size && compare(heap[hijoDer].getKey(), heap[extremo].getKey()) > 0) {
+                extremo = hijoDer;
+            }
+        }
+
+        if (extremo != index) {
+            swap(index, extremo);
+            heapify(extremo);
+        }
+    }
+
+    private void swap(int i, int j) {
+        HeapNode<K, T> temp = heap[i];
+        heap[i] = heap[j];
+        heap[j] = temp;
+    }
+
+    private void resize() {
+        int newCapacity = heap.length * 2; //Dobla el largo
+        HeapNode<K, T>[] newHeap = new HeapNode[newCapacity];
+        for (int i = 0; i < heap.length; i++) { // Guarda todos los valores
+            newHeap[i] = heap[i];
+        }
+        heap = newHeap;
+    }
+
+    private int compare(K key1, K key2) {
+        // Compare based on whether it's a min-heap or max-heap
+        if (isMin) {
+            return key1.compareTo(key2); // Si es heap minimo
+        } else {
+            return key2.compareTo(key1); // Si es heap maximo
+        }
     }
 
     @Override
-    public void clear() {
-        cantidad = 0;
+    public HeapNode<K, T> getNode(){
+        return heap[0];
     }
 
-    //metodo q sube un elem si es mas chico q su padre
-    private void moverHaciaArriba(int i) {
-        while (i > 0) {
-            int padre = (i - 1) / 2;
-            if (arreglo[i].compareTo(arreglo[padre]) < 0) {
-                intercambiar(i, padre);
-                i = padre;
-            } else {
-                break;
-            }
+    @Override
+    public T getValue(){
+        return heap[0].getValue();
+    }
+
+    @Override
+    public K getKey(){
+        return heap[0].getKey();
+    }
+
+    @Override
+    public boolean containsKey(K key) throws EmptyHeapException {
+        if (isEmpty()) {
+            throw new EmptyHeapException("Heap esta vacio");
         }
+    return false;
     }
 
-    //metodo q baja un elemento si es mas grade q sus hijos
-    private void moverHaciaAbajo(int i) {
-        while (i * 2 + 1 < cantidad) {
-            int hijoIzq = i * 2 + 1;
-            int hijoDer = i * 2 + 2;
-            int menor = hijoIzq;
-
-            if (hijoDer < cantidad && arreglo[hijoDer].compareTo(arreglo[hijoIzq]) < 0) {
-                menor = hijoDer;
-            }
-
-            if (arreglo[i].compareTo(arreglo[menor]) > 0) {
-                intercambiar(i, menor);
-                i = menor;
-            } else {
-                break;
-            }
-        }
-    }
-
-    //metodo q duplica el tamaño del arreglo si esta lleno
-    @SuppressWarnings("unchecked")
-    private void agrandar() {
-        T[] nuevo = (T[]) new Comparable[arreglo.length * 2];
-        for (int i = 0; i < arreglo.length; i++) {
-            nuevo[i] = arreglo[i];
-        }
-        arreglo = nuevo;
-    }
-
-    //intercambia dos posiciones dle arreglo
-    private void intercambiar(int i, int j) {
-        T aux = arreglo[i];
-        arreglo[i] = arreglo[j];
-        arreglo[j] = aux;
-    }
 }

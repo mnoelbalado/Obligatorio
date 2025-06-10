@@ -1,8 +1,13 @@
 package um.edu.uy.entities;
 
+import um.edu.uy.exceptions.ElementAlreadyExists;
+import um.edu.uy.exceptions.ValueNoExists;
 import um.edu.uy.tads.hashTable.MyHashTable;
+import um.edu.uy.tads.heap.Heap;
+import um.edu.uy.tads.heap.MyHeap;
 import um.edu.uy.tads.linkedList.MyLinkedList;
 import com.opencsv.CSVReader;
+
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -11,20 +16,18 @@ import java.io.IOException;
 public class UMovie implements UmMovieint {
     private MyLinkedList<String> datos;
     String Moviecsv = "resources/movies_metadata.csv";
-    String RatingCsv = "resources/ratings.csv";
+    String RatingCsv = "resources/ratings_1mm.csv";
 
 
     public UMovie() {
         datos = new MyLinkedList<>();
-
-
     }
 
 
     @Override
     public void Top_5_peliculas_por_idioma(String idioma) throws IOException {
         System.out.println("cargando datos");
-        MyLinkedList<Integer> idPeliculaS = new MyLinkedList<>();
+        MyHashTable<Integer, String> nombrePeliculas = new MyHashTable<>(8);
         CSVReader reader = new CSVReader(new FileReader(Moviecsv));
 
         String[] fila;
@@ -32,13 +35,22 @@ public class UMovie implements UmMovieint {
 
         String idiomatabla = null;
         int idPelicula = 0;
+        String tituloPelicula = null;
+
 
         while ((fila = reader.readNext()) != null) {//Devuelve una lista con las columnas de las filas (elemento 1 primer columna y etc)
             idiomatabla = fila[7];
-            idPelicula = Integer.parseInt(fila[5]);
-            System.out.println(idPelicula);
+            tituloPelicula = fila[8];
+            try { idPelicula = Integer.parseInt(fila[5]);}
+            catch (NumberFormatException e) {
+                continue;
+            }
             if (idiomatabla.equals(idioma.toLowerCase())) {//El lowercase lo que hace es convertir las entradas en minusucla ya que estan asi en la tabla
-                idPeliculaS.add(idPelicula);
+                try {
+                    nombrePeliculas.put(idPelicula, tituloPelicula);
+                } catch (ElementAlreadyExists e) {
+                    throw new RuntimeException(e);
+                }
             }
 
 
@@ -47,21 +59,45 @@ public class UMovie implements UmMovieint {
         reader = new CSVReader(new FileReader(RatingCsv));
 
         float ratings = 0;
-        MyHashTable<Float, Integer>  mapa = new  MyHashTable<>(8); //Cambiar por heap
+        Heap<Integer, Float> mapa = new MyHeap<>(false);
         reader.readNext(); // saltar encabezado
 
 
         while ((fila = reader.readNext()) != null) {//Devuelve una lista con las columnas de las filas (elemento 1 primer columna y etc)
-            idPelicula = Integer.parseInt(fila[1]);
+            try { idPelicula = Integer.parseInt(fila[1]);}
+            catch (NumberFormatException e) {
+                continue;}
             ratings = Float.parseFloat(fila[2]) ;
 
-            mapa.put(ratings, idPelicula);
+
+            mapa.put(idPelicula, ratings);
+
 
 
         }
         reader.close();
+        //Aca hacemos un while y sacamos los 5 con mas ratings por idioma
+
+
+        int recorrido = 0;
+        int peliculaid;
+        float rating;
+
+        while (recorrido<5){
+            peliculaid = mapa.getKey();
+            rating = mapa.getValue();
+            try {
+                tituloPelicula = nombrePeliculas.get(peliculaid);
+            } catch (ValueNoExists e) {
+            }
+            System.out.print("peliculaid: " + peliculaid );//Borramos el ln por el formato que pide la letra
+            System.out.print("tituloPelicula" + tituloPelicula);
+            System.out.println("rating" + rating );
+            recorrido++;
+        }
 
     }
+
 
 
 

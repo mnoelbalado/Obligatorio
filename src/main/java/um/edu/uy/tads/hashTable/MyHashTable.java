@@ -43,7 +43,12 @@ public class MyHashTable<K, V> implements HashTable<K, V> {
         MyLinkedList<Entry<K, V>> bucket = buckets[index];
 
         for (int i = 0; i < bucket.size(); i++) {
-            Entry<K, V> entry = bucket.get(i);
+            Entry<K, V> entry = null;
+            try {
+                entry = bucket.get(i);
+            } catch (InvalidIndex e) {
+                throw new RuntimeException(e);
+            }
             if (entry.key.equals(key)) {
                 //si la clave ya existe, se lanza excepción
                 throw new ElementAlreadyExists("La clave '" + key + "' ya existe en la tabla.");
@@ -60,7 +65,12 @@ public class MyHashTable<K, V> implements HashTable<K, V> {
         MyLinkedList<Entry<K, V>> bucket = buckets[index];
 
         for (int i = 0; i < bucket.size(); i++) {
-            Entry<K, V> entry = bucket.get(i);
+            Entry<K, V> entry = null;
+            try {
+                entry = bucket.get(i);
+            } catch (InvalidIndex e) {
+                throw new RuntimeException(e);
+            }
             if (entry.key.equals(key)) {
                 return entry.value;
             }
@@ -75,9 +85,18 @@ public class MyHashTable<K, V> implements HashTable<K, V> {
         MyLinkedList<Entry<K, V>> bucket = buckets[index];
 
         for (int i = 0; i < bucket.size(); i++) {
-            Entry<K, V> entry = bucket.get(i);
+            Entry<K, V> entry = null;
+            try {
+                entry = bucket.get(i);
+            } catch (InvalidIndex e) {
+                throw new RuntimeException(e);
+            }
             if (entry.key.equals(key)) {
-                bucket.remove(entry);
+                try {
+                    bucket.remove(entry);
+                } catch (ElementNotFound e) {
+                    throw new RuntimeException(e);
+                }
                 size--;
                 return true;
             }
@@ -92,8 +111,12 @@ public class MyHashTable<K, V> implements HashTable<K, V> {
         MyLinkedList<Entry<K, V>> bucket = buckets[index];
 
         for (int i = 0; i < bucket.size(); i++) {
-            if (bucket.get(i).key.equals(key)) {
-                return true;
+            try {
+                if (bucket.get(i).key.equals(key)) {
+                    return true;
+                }
+            } catch (InvalidIndex e) {
+                throw new RuntimeException(e);
             }
         }
 

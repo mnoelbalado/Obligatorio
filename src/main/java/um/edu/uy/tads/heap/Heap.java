@@ -1,18 +1,24 @@
 package um.edu.uy.tads.heap;
-import um.edu.uy.exceptions.*;
 
-//ES UN MIN HEAP
-public interface Heap<T extends Comparable<T>> {
 
-    void insert(T element); //inserta un nuevo elemento en el heap
+import um.edu.uy.exceptions.EmptyHeapException;
 
-    T peek() throws HeapEmptyException; //devuelve el elemento mínimo sin eliminarlo, lanza HeapEmptyException si el heap está vacío.
+public interface Heap<K extends Comparable<K>, T> {
 
-    T removeMin() throws HeapEmptyException; //elimina y devuelve el elemento mínimo, lanza HeapEmptyException si el heap está vacío.
+    void put(K key, T value);
 
-    boolean isEmpty(); //devuelve true si el heap esta vacio
+    T delete() throws EmptyHeapException;
 
-    int size(); //devuelve la cant de elementos del heap
+    int size();
 
-    void clear(); //elimina todos los elementos del heap
+    boolean isEmpty();
+
+    HeapNode<K, T> getNode();
+
+    T getValue();
+
+    K getKey();
+
+    boolean containsKey(K key) throws EmptyHeapException;
 }
+
