@@ -8,31 +8,35 @@ import um.edu.uy.tads.linkedList.MyLinkedList;
 import java.io.FileReader;
 
 public class CargarDatos {
+    //variables de instancia
     private MyLinkedList<String> datos;
     String Moviecsv = "resources/movies_metadata.csv";
     String RatingCsv = "resources/ratings_1mm.csv";
 
 
+    //constructor
     public CargarDatos() {
         datos = new MyLinkedList<>();
     }
 
+    //metodo principal de carga
     public void cargarTodo() {
         cargarPeliculas();
         cargarRatings();
         //cargarCreditos();
     }
 
+    //metodo especifico para cargar las peliculas
     public void cargarPeliculas() {
         try {
             System.out.println("cargando peliculas..."); //Para ver que ande
-            MyHashTable<Integer, String> nombrePeliculas = new MyHashTable<>(8);
+            MyHashTable<Integer, String> nombrePeliculas = new MyHashTable<>(8); //hash para almacenar películas
             String linea;
 
             CSVReader reader = new CSVReader(new FileReader(Moviecsv));
 
             String[] fila;
-            reader.readNext(); // saltar encabezado
+            reader.readNext();
 
 
         } catch (Exception e) {
