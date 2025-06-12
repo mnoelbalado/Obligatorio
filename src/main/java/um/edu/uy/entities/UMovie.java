@@ -16,19 +16,20 @@ import java.io.IOException;
 
 public class UMovie implements UmMovieint {
 
-
-    private CargarDatos cargador;  // Quitar los paréntesis
+    private CargarDatos cargador;
     private MyLinkedList<String> datos;
 
+    //constructor
     public UMovie(CargarDatos cargador) {
         datos = new MyLinkedList<>();
-        this.cargador = cargador;  // Usar el parámetro, no crear uno nuevo
+        this.cargador = cargador;
     }
 
 
+    //metodo para cargar los datos
     @Override
-    public void cargarDatos() {  // Nombre de método en minúscula
-        cargador.cargarTodo();  // Llamar al método del cargador
+    public void cargarDatos() {
+        cargador.cargarTodo();
     }
 
 
@@ -36,7 +37,6 @@ public class UMovie implements UmMovieint {
     public void Top_5_peliculas_por_idioma(String idioma) throws IOException {
         System.out.println("Cargando datos...");
 
-        // Declarar variables que faltaban
         MyHashTable<Integer, String> nombrePeliculas = new MyHashTable<>(8);
         CSVReader reader;
 
