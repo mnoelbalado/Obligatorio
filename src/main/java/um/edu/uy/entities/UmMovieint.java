@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public interface UmMovieint {
+    void cargarDatos();
     void Top_5_peliculas_por_idioma(String idioma) throws IOException;
     void Top_10_peliculas_mejor_calificacion_por_usuarios();
     void Top_5_colecciones_mas_ingresos();
