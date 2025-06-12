@@ -40,6 +40,7 @@ public class UMovie implements UmMovieint {
         CSVReader reader;
 
         // Cargar películas
+        cargador.cargarPeliculas();
         reader = new CSVReader(new FileReader(cargador.Moviecsv)); // Usar la ruta del cargador
         String[] fila;
         reader.readNext(); // saltar encabezado
@@ -68,10 +69,11 @@ public class UMovie implements UmMovieint {
         reader.close();
 
         // Cargar ratings
-        reader = new CSVReader(new FileReader("resources/ratings_1mm.csv")); // Usar ruta directa
-        float ratings = 0;
+        cargador.cargarRatings();
+        reader = new CSVReader(new FileReader(cargador.RatingCsv)); // Usar ruta directa
+        reader.readNext();
         Heap<Integer, Float> mapa = new MyHeap<>(false);
-        reader.readNext(); // saltar encabezado
+        float ratings = 0;
 
         while ((fila = reader.readNext()) != null) {
             try {

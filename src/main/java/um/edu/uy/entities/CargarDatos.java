@@ -4,13 +4,13 @@ import com.opencsv.CSVReader;
 import um.edu.uy.tads.hashTable.MyHashTable;
 import um.edu.uy.tads.linkedList.MyLinkedList;
 
-import java.io.BufferedReader;
+
 import java.io.FileReader;
 
 public class CargarDatos {
     private MyLinkedList<String> datos;
     String Moviecsv = "resources/movies_metadata.csv";
-    //String RatingCsv = "resources/ratings_1mm.csv";
+    String RatingCsv = "resources/ratings_1mm.csv";
 
 
     public CargarDatos() {
@@ -19,12 +19,13 @@ public class CargarDatos {
 
     public void cargarTodo() {
         cargarPeliculas();
-        //cargarRatings();
+        cargarRatings();
         //cargarCreditos();
     }
 
     public void cargarPeliculas() {
         try {
+            System.out.println("cargando peliculas..."); //Para ver que ande
             MyHashTable<Integer, String> nombrePeliculas = new MyHashTable<>(8);
             String linea;
 
@@ -38,27 +39,27 @@ public class CargarDatos {
             System.out.println("Error cargando películas: " + e.getMessage());
         }
     }
-}
 
-   /* public void cargarRatings() {
+
+    public void cargarRatings() {
         try {
-            BufferedReader br = new BufferedReader(new FileReader("resources/ratings_1mm.csv"));
+            System.out.println("Cargando ratings..."); //Probamos que funcione
+            MyHashTable<Integer, Float> ratingsTable = new MyHashTable<>(8);
             String linea;
-            br.readLine(); // saltar encabezado
 
-            while ((linea = br.readLine()) != null) {
-                String[] datos = linea.split(",");
-                // Aquí tienes todos los datos del rating
-                System.out.println("Rating: " + datos[2]); // puntuación
-            }
-            br.close();
+            CSVReader reader = new CSVReader(new FileReader("resources/ratings_1mm.csv"));
+
+            String[] fila;
+            reader.readNext(); // saltar encabezado
+
 
         } catch (Exception e) {
             System.out.println("Error cargando ratings: " + e.getMessage());
         }
     }
+}
 
-    public void cargarCreditos() {
+   /* public void cargarCreditos() {
         try {
             BufferedReader br = new BufferedReader(new FileReader("resources/credits.csv"));
             String linea;
