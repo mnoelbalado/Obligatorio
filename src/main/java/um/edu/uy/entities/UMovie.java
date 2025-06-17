@@ -2,6 +2,7 @@ package um.edu.uy.entities;
 
 import um.edu.uy.exceptions.ElementAlreadyExists;
 import um.edu.uy.exceptions.EmptyHeapException;
+import um.edu.uy.exceptions.InvalidIndex;
 import um.edu.uy.exceptions.ValueNoExists;
 import um.edu.uy.tads.hashTable.MyHashTable;
 import um.edu.uy.tads.heap.Heap;
@@ -34,10 +35,12 @@ public class UMovie implements UmMovieint {
 
 
     @Override
-    public void Top5PeliculasPorIdioma(String idioma) throws IOException {
+    public void Top5PeliculasPorIdioma(String idioma) throws IOException, NumberFormatException {
         System.out.println("Cargando datos...");
-
+        MyHashTable<Integer, Float> ratingsPromedio = new MyHashTable<>(8);
+        MyHashTable<Integer, Integer> conteoRatings = new MyHashTable<>(8);
         MyHashTable<Integer, String> nombrePeliculas = new MyHashTable<>(8);
+
         CSVReader reader;
 
         // Cargar películas
@@ -51,10 +54,10 @@ public class UMovie implements UmMovieint {
         String tituloPelicula = null;
 
         while ((fila = reader.readNext()) != null) {
-            idiomatabla = fila[7];
-            tituloPelicula = fila[8];
+            idiomatabla = fila[8];
+            tituloPelicula = fila[9];
             try {
-                idPelicula = Integer.parseInt(fila[5]);
+                idPelicula = Integer.parseInt(fila[6]);
             } catch (NumberFormatException e) {
                 continue;
             }
@@ -80,12 +83,76 @@ public class UMovie implements UmMovieint {
             try {
                 idPelicula = Integer.parseInt(fila[1]);
                 ratings = Float.parseFloat(fila[2]);
-                mapa.put(idPelicula, ratings);
+
+                try {
+                    nombrePeliculas.get(idPelicula); //Cambio: Verificar que existe
+
+                    try {
+                        float sumaActual = ratingsPromedio.get(idPelicula);
+                        ratingsPromedio.put(idPelicula, sumaActual + ratings);
+                    } catch (ValueNoExists e) {
+                        try {
+                            ratingsPromedio.put(idPelicula, ratings);
+                        } catch (ElementAlreadyExists ex) {
+
+                        }
+                    }
+
+                    try {
+                        int conteoActual = conteoRatings.get(idPelicula);
+                        conteoRatings.put(idPelicula, conteoActual + 1);
+                    } catch (ValueNoExists e) {
+                        conteoRatings.put(idPelicula, 1);
+                    }
+
+                } catch (Exception e) {
+                }
+
+            } catch (Exception e) {
+
+            }
+        }
+
+        // Crear heap con promedios
+        Heap<Integer, Float> map = new MyHeap<>(false);
+
+        // Calcular promedios y agregar al heap
+        // Necesitamos iterar sobre las películas que tienen ratings
+        MyLinkedList<Integer> peliculasConRatings = new MyLinkedList<>();
+
+
+        reader = new CSVReader(new FileReader(cargador.RatingCsv));
+        reader.readNext(); // saltar encabezado
+
+        while ((fila = reader.readNext()) != null) {
+            try {
+                idPelicula = Integer.parseInt(fila[1]);
+                // Si la película está en nuestro idioma y no la hemos procesado
+                try {
+                    nombrePeliculas.get(idPelicula);
+                    // Verificar si ya está en nuestra lista
+                    boolean yaExiste = false;
+                    for (int i = 0; i < peliculasConRatings.size(); i++) {
+                        if (peliculasConRatings.get(i).equals(idPelicula)) {
+                            yaExiste = true;
+                            break;
+                        }
+                    }
+                    if (!yaExiste) {
+                        peliculasConRatings.add(idPelicula);
+                    }
+                } catch (ValueNoExists e) {
+                    // No está en nuestro idioma
+                } catch (InvalidIndex e) {
+                    throw new RuntimeException(e);
+                }
             } catch (NumberFormatException e) {
                 continue;
             }
         }
+
         reader.close();
+
 
         // Mostrar top 5
         int recorrido = 0;

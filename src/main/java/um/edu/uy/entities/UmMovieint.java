@@ -5,7 +5,7 @@ import java.io.IOException;
 
 public interface UmMovieint {
     void cargarDatos();
-    void Top5PeliculasPorIdioma(String idioma) throws IOException;
+    void Top5PeliculasPorIdioma(String idioma) throws IOException, NumberFormatException;
     void Top10PeliculasMejorCalificacionPorUsuarios();
     void Top5ColeccionesMasIngresos();
     void Top10DirectoresMejorCalificacion();
