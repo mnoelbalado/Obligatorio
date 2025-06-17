@@ -14,6 +14,7 @@ public class CargarDatos {
     String RatingCsv = "resources/ratings_1mm.csv";
 
 
+
     //constructor
     public CargarDatos() {
         datos = new MyLinkedList<>();
