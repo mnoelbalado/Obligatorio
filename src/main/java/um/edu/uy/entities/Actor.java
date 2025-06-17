@@ -1,7 +1,7 @@
 package um.edu.uy.entities;
 
 public class Actor {
-    String nombre;
+    private String nombre;
 
     //constructor
     public Actor(String nombre) {

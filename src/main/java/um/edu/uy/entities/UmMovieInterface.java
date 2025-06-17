@@ -1,9 +1,8 @@
 package um.edu.uy.entities;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
-public interface UmMovieint {
+public interface UmMovieInterface {
     void cargarDatos();
     void Top5PeliculasPorIdioma(String idioma) throws IOException;
     void Top10PeliculasMejorCalificacionPorUsuarios();

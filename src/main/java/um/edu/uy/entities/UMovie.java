@@ -14,7 +14,7 @@ import java.io.FileReader;
 import java.io.IOException;
 
 
-public class UMovie implements UmMovieint {
+public class UMovie implements UmMovieInterface {
 
     private CargarDatos cargador;
     private MyLinkedList<String> datos;

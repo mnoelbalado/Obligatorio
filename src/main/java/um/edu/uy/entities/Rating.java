@@ -1,10 +1,10 @@
 package um.edu.uy.entities;
 
 public class Rating {
-    String idPelciula;
-    double rating;
-    String idUsuario;
-    String fecha;
+    private String idPelciula;
+    private double rating;
+    private String idUsuario;
+    private String fecha;
 
     //constructor
     public Rating(String idPelciula, double rating, String idUsuario, String fecha) {
