@@ -34,7 +34,7 @@ public class UMovie implements UmMovieint {
 
 
     @Override
-    public void Top_5_peliculas_por_idioma(String idioma) throws IOException {
+    public void Top5PeliculasPorIdioma(String idioma) throws IOException {
         System.out.println("Cargando datos...");
 
         MyHashTable<Integer, String> nombrePeliculas = new MyHashTable<>(8);
@@ -114,27 +114,27 @@ public class UMovie implements UmMovieint {
 
 
     @Override
-    public void Top_10_peliculas_mejor_calificacion_por_usuarios() {
+    public void Top10PeliculasMejorCalificacionPorUsuarios() {
 
     }
 
     @Override
-    public void Top_5_colecciones_mas_ingresos() {
+    public void Top5ColeccionesMasIngresos() {
 
     }
 
     @Override
-    public void Top_10_directores_mejor_calificacion() {
+    public void Top10DirectoresMejorCalificacion() {
 
     }
 
     @Override
-    public void Actor_con_mas_calificaciones_en_cada_mes_del_anio(int anio) {
+    public void ActorConMasCalificacionesEnCadaMesDelAnio(int anio) {
 
     }
 
     @Override
-    public void Usuario_con_mas_calificaciones_por_genero(String genero) {
+    public void UsuarioConMasCalificacionesPorGenero(String genero) {
 
     }
 }
