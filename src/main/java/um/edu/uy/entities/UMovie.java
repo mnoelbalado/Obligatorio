@@ -3,6 +3,7 @@ package um.edu.uy.entities;
 import um.edu.uy.exceptions.ElementAlreadyExists;
 import um.edu.uy.exceptions.EmptyHeapException;
 import um.edu.uy.exceptions.ValueNoExists;
+import um.edu.uy.tads.hashTable.HashTable;
 import um.edu.uy.tads.hashTable.MyHashTable;
 import um.edu.uy.tads.heap.Heap;
 import um.edu.uy.tads.heap.MyHeap;
