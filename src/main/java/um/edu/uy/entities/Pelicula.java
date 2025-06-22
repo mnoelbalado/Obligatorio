@@ -9,6 +9,10 @@ public class Pelicula {
     private double ingresos;
     private MyLinkedList<String> generos;
 
+    //necesito para el tercer metodo:
+    private String idSaga;
+    private String tituloSaga;
+
     //constructor
     public Pelicula(String idPelicula, String titulo, String idiomaOriginal, double ingresos, MyLinkedList<String> generos) {
         this.idPelicula = idPelicula;
@@ -57,5 +61,21 @@ public class Pelicula {
 
     public void setGeneros(MyLinkedList<String> generos) {
         this.generos = generos;
+    }
+
+    public String getIdSaga() {
+        return idSaga;
+    }
+
+    public void setIdSaga(String idSaga) {
+        this.idSaga = idSaga;
+    }
+
+    public String getTituloSaga() {
+        return tituloSaga;
+    }
+
+    public void setTituloSaga(String tituloSaga) {
+        this.tituloSaga = tituloSaga;
     }
 }
