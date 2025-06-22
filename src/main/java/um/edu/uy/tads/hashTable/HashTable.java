@@ -1,5 +1,6 @@
 package um.edu.uy.tads.hashTable;
 import um.edu.uy.exceptions.*;
+import um.edu.uy.tads.linkedList.MyLinkedList;
 
 public interface HashTable<K, V> {
     void put(K key, V value) throws ElementAlreadyExists; //inserta un nuevo par clave_valor, y lanza excepcion ElementAlreadyExists si la clave ya existe en la tabla
@@ -13,4 +14,6 @@ public interface HashTable<K, V> {
     int size(); //devuelve la cantidad de elementos almacenados
 
     boolean isEmpty(); //verifica si la tabla esta vacia
+
+    MyLinkedList<K> keys(); // devuelve todas las claves almacenadas
 }

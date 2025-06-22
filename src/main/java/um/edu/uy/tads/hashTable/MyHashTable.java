@@ -132,4 +132,25 @@ public class MyHashTable<K, V> implements HashTable<K, V> {
     public boolean isEmpty() {
         return size == 0;
     }
+
+    @Override
+    public MyLinkedList<K> keys() {
+        MyLinkedList<K> lista = new MyLinkedList<>();
+
+        for (int i = 0; i < capacity; i++) {
+            MyLinkedList<Entry<K, V>> bucket = buckets[i];
+
+            for (int j = 0; j < bucket.size(); j++) {
+                try {
+                    Entry<K, V> entry = bucket.get(j);
+                    lista.add(entry.key);
+                } catch (InvalidIndex e) {
+                    //se maneja esta excepcion aunque sea poco probable que suceda.
+                    System.out.println("Error accediendo a índice en bucket: " + e.getMessage());
+                }
+            }
+        }
+
+        return lista;
+    }
 }
