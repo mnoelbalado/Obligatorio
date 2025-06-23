@@ -12,7 +12,15 @@ public class Main {
     public static void main(String[] args) {
         UmMovieint app = new UMovie(new CargarDatos());//Defino una variable que llame a mi clase UmMovie
         try {
-            app.Top5PeliculasPorIdioma("");
+            app.Top5PeliculasPorIdioma("en");
+            app.Top5PeliculasPorIdioma("es");
+            app.Top5PeliculasPorIdioma("fr");
+            app.Top5PeliculasPorIdioma("de");
+            app.Top5PeliculasPorIdioma("it");
+
+
+
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

@@ -1,135 +1,199 @@
 package um.edu.uy.tads.hashTable;
 
+
+import um.edu.uy.exceptions.ValueNoExists;
 import um.edu.uy.tads.linkedList.MyLinkedList;
-import um.edu.uy.exceptions.*;
 
-public class MyHashTable<K, V> implements HashTable<K, V> {
+import java.lang.Math;
 
-    private static class Entry<K, V> {
-        K key;
-        V value;
+import static java.lang.Math.round;
 
-        Entry(K key, V value) {
-            this.key = key;
-            this.value = value;
-        }
-    }
+public class MyHashTable<K extends Comparable<K>, V extends Comparable<V>> implements MyHash<K, V> {
+    private NodoHash[] tablahash;
+    private int size;
+    // Indica que tan llena debe de estar la tabla para redimensionarse, debe de ser un valor decimal menor a 1
+    private double LoadFactor = 0.75f;
 
-    private MyLinkedList<Entry<K, V>>[] buckets; //array de listas para colisiones
-    private int capacity;  //cantidad de "buckets"
-    private int size;      //total de elementos insertados
+    public int capacity;
 
-    // Java no permite crear arreglos de tipos genéricos directamente.
-    // Por eso usamos un arreglo de MyLinkedList sin tipo específico.
-    // Este cast es seguro porque controlamos que siempre se guarden listas válidas.
-    //POR ESO PONEMOS EL SUPPRESS WARNING que "silencia" esta advertencia
-    @SuppressWarnings("unchecked")
     public MyHashTable(int capacity) {
         this.capacity = capacity;
-        buckets = new MyLinkedList[capacity];
-        for (int i = 0; i < capacity; i++) {
-            buckets[i] = new MyLinkedList<>();
+        this.tablahash = new NodoHash[this.capacity];
+        this.size = 0;
+    }
+
+    private void resize() {
+        NodoHash<K, V>[] oldTable = tablahash;
+        capacity = 2 * capacity;
+        size = 0;
+        tablahash = new NodoHash[capacity];
+        for (NodoHash<K, V> nodoTemp : oldTable) {
+            if(nodoTemp != null ){
+                // Ya cambia el size
+                this.put(nodoTemp.getKey(), nodoTemp.getValue());
+            }
         }
     }
 
-    //función hash básica
-    private int hash(K key) {
-        return Math.abs(key.hashCode() % capacity);
-    }
-
     @Override
-    public void put(K key, V value) throws ElementAlreadyExists {
-        int index = hash(key);
-        MyLinkedList<Entry<K, V>> bucket = buckets[index];
-
-        for (int i = 0; i < bucket.size(); i++) {
-            Entry<K, V> entry = null;
-            try {
-                entry = bucket.get(i);
-            } catch (InvalidIndex e) {
-                throw new RuntimeException(e);
-            }
-            if (entry.key.equals(key)) {
-                //si la clave ya existe, se lanza excepción
-                throw new ElementAlreadyExists("La clave '" + key + "' ya existe en la tabla.");
-            }
-        }
-
-        bucket.add(new Entry<>(key, value));
-        size++;
-    }
-
-    @Override
-    public V get(K key) throws ValueNoExists {
-        int index = hash(key);
-        MyLinkedList<Entry<K, V>> bucket = buckets[index];
-
-        for (int i = 0; i < bucket.size(); i++) {
-            Entry<K, V> entry = null;
-            try {
-                entry = bucket.get(i);
-            } catch (InvalidIndex e) {
-                throw new RuntimeException(e);
-            }
-            if (entry.key.equals(key)) {
-                return entry.value;
-            }
-        }
-
-        throw new ValueNoExists("La clave '" + key + "' no existe en la tabla.");
-    }
-
-    @Override
-    public boolean remove(K key) throws ValueNoExists {
-        int index = hash(key);
-        MyLinkedList<Entry<K, V>> bucket = buckets[index];
-
-        for (int i = 0; i < bucket.size(); i++) {
-            Entry<K, V> entry = null;
-            try {
-                entry = bucket.get(i);
-            } catch (InvalidIndex e) {
-                throw new RuntimeException(e);
-            }
-            if (entry.key.equals(key)) {
-                try {
-                    bucket.remove(entry);
-                } catch (ElementNotFound e) {
-                    throw new RuntimeException(e);
+    public void put(K key, V value) {
+        int pos = HashFunction(key);
+        NodoHash<K, V> nodoAgregado = new NodoHash<>(key, value);
+        if (tablahash[pos] == null) {
+            tablahash[pos] = nodoAgregado;
+        } else {
+            while (tablahash[pos] != null) {
+                if (tablahash[pos].getKey().equals(key)) {
+                    tablahash[pos] = nodoAgregado;
+                    return;
                 }
-                size--;
+                if(pos == capacity-1){
+                    pos=0;
+                }
+                pos = pos + 1;
+            }
+            tablahash[pos] = nodoAgregado;
+        }
+        size ++;
+
+        // Cada vez que agregas un elemento, el programa debe de fijarse
+        //
+        if((size) >= (int)(capacity * LoadFactor)) {
+            resize();
+        }
+
+    }
+
+
+    private NodoHash<K, V> getNodo(K key) {
+        int pos = HashFunction(key);
+        while (tablahash[pos] != null) {
+            if (tablahash[pos].getKey().equals(key)) {
+            return tablahash[pos];
+            } else {
+                if(pos == capacity-1){
+                    return null;
+                }
+                pos = pos + 1;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public V get(K key) throws ValueNoExists{
+        NodoHash<K, V> nodo = getNodo(key);
+        if(nodo != null) {
+            return nodo.getValue();
+        }
+        throw new ValueNoExists("No existe");
+    }
+
+    @Override
+    public boolean contains(K key) {
+        int pos = HashFunction(key);
+        while (pos < capacity && tablahash[pos] != null){
+            if(tablahash[pos].getKey().equals(key)){
                 return true;
             }
+            pos =pos +1;
         }
-
-        throw new ValueNoExists("No se puede eliminar: la clave '" + key + "' no existe.");
-    }
-
-    @Override
-    public boolean containsKey(K key) {
-        int index = hash(key);
-        MyLinkedList<Entry<K, V>> bucket = buckets[index];
-
-        for (int i = 0; i < bucket.size(); i++) {
-            try {
-                if (bucket.get(i).key.equals(key)) {
-                    return true;
-                }
-            } catch (InvalidIndex e) {
-                throw new RuntimeException(e);
-            }
-        }
-
         return false;
     }
 
     @Override
-    public int size() {
-        return size;
+    public void remove(K clave) {
+        int pos = HashFunction(clave);
+        while(tablahash[pos]!= null) {
+            if (tablahash[pos].getKey().equals(clave)) {
+                tablahash[pos] = null;
+            }
+            pos = (pos + 1)%capacity;
+        }
+        size --;
+    }
+
+    /** Devuelve la posicion **/
+    public int HashFunction(K key){
+        int HashValue = key.hashCode(); // Cada elemento K tiene una key asociada (por comparable)
+        return Math.abs(HashValue) % capacity;
+    }
+
+    /** Prints the hashmap on screen **/
+    public String printOnScreen(boolean fully){
+        String resp = "{";
+        for (int i = 0; i<this.capacity; i++){
+            boolean hasElement = false;
+            if (this.tablahash[i] != null) {
+                resp += this.tablahash[i].getKey() + ":" + this.tablahash[i].getValue();
+                hasElement = true;
+            }
+            else {
+                if (fully){
+                    resp += "null:null";
+                    hasElement = true;
+                }
+            }
+            if (i != this.capacity-1 && hasElement) {
+                resp += ", ";
+            }
+        }
+        resp += "}";
+        return resp;
     }
 
     @Override
-    public boolean isEmpty() {
-        return size == 0;
+    public String toString(){return this.printOnScreen(false);}
+
+    public int capacity(){
+        return this.capacity;
     }
+
+    public int size(){
+        return this.size;
+    }
+
+    public MyLinkedList<NodoHash<K, V>> getNodesAsList(boolean reversed){
+        MyLinkedList<NodoHash<K, V>> temp = new MyLinkedList<>();
+        if (reversed){
+            for (int i = this.capacity; i>0; i--){
+                if (this.tablahash[i] != null){
+                    temp.add(this.tablahash[i]);
+                }
+            }
+        }
+        else {
+            for (int i = 0; i<this.capacity; i++){
+                if (this.tablahash[i] != null){
+                    temp.add(this.tablahash[i]);
+                }
+            }
+        }
+
+        return temp;
+    }
+
+
+
+    public MyLinkedList<NodoHash<V, K>> getNodesAsSwappedList(boolean reversed){
+        MyLinkedList<NodoHash<V, K>> temp = new MyLinkedList<>();
+        if (reversed){
+            for (int i = this.capacity; i>0; i--){
+                if (this.tablahash[i] != null){
+                    temp.add(this.tablahash[i].swap());
+                }
+            }
+        }
+        else {
+            for (int i = 0; i<this.capacity; i++){
+                if (this.tablahash[i] != null){
+                    temp.add(this.tablahash[i].swap());
+                }
+            }
+        }
+
+        return temp;
+    }
+
+
 }

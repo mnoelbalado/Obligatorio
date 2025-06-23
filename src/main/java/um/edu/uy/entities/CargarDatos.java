@@ -30,7 +30,7 @@ public class CargarDatos {
     //metodo especifico para cargar las peliculas
     public void cargarPeliculas() {
         try {
-            System.out.println("cargando peliculas..."); //Para ver que ande
+            //System.out.println("cargando peliculas..."); //Para ver que ande
             MyHashTable<Integer, String> nombrePeliculas = new MyHashTable<>(8); //hash para almacenar películas
             String linea;
 
@@ -48,7 +48,7 @@ public class CargarDatos {
 
     public void cargarRatings() {
         try {
-            System.out.println("Cargando ratings..."); //Probamos que funcione
+            //System.out.println("Cargando ratings..."); //Probamos que funcione
             MyHashTable<Integer, Float> ratingsTable = new MyHashTable<>(8);
             String linea;
 
