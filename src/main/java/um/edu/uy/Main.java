@@ -1,9 +1,9 @@
 package um.edu.uy;
 
 import com.opencsv.exceptions.CsvValidationException;
-import um.edu.uy.entities.UMovie;
-import um.edu.uy.exceptions.InvalidIndex;
-import um.edu.uy.exceptions.ValueNoExists;
+import um.edu.uy.Entities.UMovie;
+import um.edu.uy.Exceptions.InvalidIndex;
+import um.edu.uy.Exceptions.ValueNoExists;
 
 import java.io.IOException;
 
