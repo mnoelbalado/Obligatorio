@@ -1,5 +1,6 @@
 package um.edu.uy.entities;
 
+import um.edu.uy.tads.linkedList.LinkedList;
 import um.edu.uy.tads.linkedList.MyLinkedList;
 
 public class Pelicula {
@@ -7,6 +8,7 @@ public class Pelicula {
     private String titulo;
     private String idiomaOriginal;
     private double ingresos;
+    private LinkedList<Rating> listaRating;
 
 //    //necesito para el tercer metodo:
 //    private String idSaga;
@@ -54,4 +56,7 @@ public class Pelicula {
         this.ingresos = ingresos;
     }
 
+    public void agregarRating(Rating rating) {
+        listaRating.add(rating);
+    }
 }
