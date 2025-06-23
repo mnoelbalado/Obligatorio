@@ -1,8 +1,8 @@
-package um.edu.uy.tads.hashTable;
+package um.edu.uy.TADS.HashTable;
 
 import java.util.Objects;
 
-public class NodoHash <K extends Comparable<K>,V extends Comparable<V>> implements Comparable<NodoHash<K, V>> {
+public class NodoHash <K extends Comparable<K>,V > implements Comparable<NodoHash<K, V>> {
     private K key;
     private V value;
 
@@ -50,7 +50,5 @@ public class NodoHash <K extends Comparable<K>,V extends Comparable<V>> implemen
         return this.key.compareTo(o.getKey());
     }
 
-    public NodoHash<V, K> swap(){
-        return new NodoHash<>(this.getValue(), this.getKey());
-    }
+
 }

@@ -1,14 +1,13 @@
-package um.edu.uy.tads.hashTable;
+package um.edu.uy.TADS.HashTable;
+import um.edu.uy.Exceptions.ValueNoExists;
+import um.edu.uy.TADS.LinkedList.MyLinkedList;
 
-
-import um.edu.uy.exceptions.ValueNoExists;
-import um.edu.uy.tads.linkedList.MyLinkedList;
 
 import java.lang.Math;
 
 import static java.lang.Math.round;
 
-public class MyHashTable<K extends Comparable<K>, V extends Comparable<V>> implements MyHash<K, V> {
+public class MyHashTable<K extends Comparable<K>, V > implements MyHash<K, V> {
     private NodoHash[] tablahash;
     private int size;
     // Indica que tan llena debe de estar la tabla para redimensionarse, debe de ser un valor decimal menor a 1
@@ -81,7 +80,7 @@ public class MyHashTable<K extends Comparable<K>, V extends Comparable<V>> imple
     }
 
     @Override
-    public V get(K key) throws ValueNoExists{
+    public V get(K key) throws ValueNoExists {
         NodoHash<K, V> nodo = getNodo(key);
         if(nodo != null) {
             return nodo.getValue();
@@ -175,25 +174,7 @@ public class MyHashTable<K extends Comparable<K>, V extends Comparable<V>> imple
 
 
 
-    public MyLinkedList<NodoHash<V, K>> getNodesAsSwappedList(boolean reversed){
-        MyLinkedList<NodoHash<V, K>> temp = new MyLinkedList<>();
-        if (reversed){
-            for (int i = this.capacity; i>0; i--){
-                if (this.tablahash[i] != null){
-                    temp.add(this.tablahash[i].swap());
-                }
-            }
-        }
-        else {
-            for (int i = 0; i<this.capacity; i++){
-                if (this.tablahash[i] != null){
-                    temp.add(this.tablahash[i].swap());
-                }
-            }
-        }
 
-        return temp;
-    }
 
 
 }
