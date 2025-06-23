@@ -5,7 +5,6 @@ import um.edu.uy.tads.linkedList.MyLinkedList;
 import java.io.IOException;
 
 public interface UmMovieInterface {
-    void cargarDatos();
 
     void Top5PeliculasPorIdioma(String idioma) throws IOException;
 
@@ -19,5 +18,5 @@ public interface UmMovieInterface {
 
     void UsuarioConMasCalificacionesPorGenero(String genero);
 
-
+    void pruebaCargaPelis();
 }
