@@ -1,4 +1,4 @@
-package um.edu.uy.entities;
+package um.edu.uy.Entities;
 
 public class Usuario {
        private String idUsuario;

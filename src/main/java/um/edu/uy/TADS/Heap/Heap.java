@@ -1,7 +1,7 @@
-package um.edu.uy.tads.heap;
+package um.edu.uy.TADS.Heap;
 
 
-import um.edu.uy.exceptions.EmptyHeapException;
+import um.edu.uy.Exceptions.EmptyHeapException;
 
 public interface Heap<K extends Comparable<K>, T> {
 

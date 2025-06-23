@@ -1,29 +1,33 @@
-package um.edu.uy.entities;
+package um.edu.uy.Entities;
 
-import um.edu.uy.tads.linkedList.MyLinkedList;
+import um.edu.uy.TADS.LinkedList.LinkedList;
 
 public class Pelicula {
-    private String idPelicula;
+    private int idPelicula;
     private String titulo;
     private String idiomaOriginal;
     private double ingresos;
-    private MyLinkedList<String> generos;
+    private LinkedList<Rating> listaRating;
+
+//    //necesito para el tercer metodo:
+//    private String idSaga;
+//    private String tituloSaga;
 
     //constructor
-    public Pelicula(String idPelicula, String titulo, String idiomaOriginal, double ingresos, MyLinkedList<String> generos) {
+    public Pelicula(int idPelicula, String titulo, String idiomaOriginal, double ingresos) {
         this.idPelicula = idPelicula;
         this.titulo = titulo;
         this.idiomaOriginal = idiomaOriginal;
         this.ingresos = ingresos;
-        this.generos = generos;
+
     }
 
     //getters y setters
-    public String getIdPelicula() {
+    public int getIdPelicula() {
         return idPelicula;
     }
 
-    public void setIdPelicula(String idPelicula) {
+    public void setIdPelicula(int idPelicula) {
         this.idPelicula = idPelicula;
     }
 
@@ -51,11 +55,7 @@ public class Pelicula {
         this.ingresos = ingresos;
     }
 
-    public MyLinkedList<String> getGeneros() {
-        return generos;
-    }
-
-    public void setGeneros(MyLinkedList<String> generos) {
-        this.generos = generos;
+    public void agregarRating(Rating rating) {
+        listaRating.add(rating);
     }
 }

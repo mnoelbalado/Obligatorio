@@ -1,5 +1,5 @@
-package um.edu.uy.tads.linkedList;
-import um.edu.uy.exceptions.*;
+package um.edu.uy.TADS.LinkedList;
+import um.edu.uy.Exceptions.*;
 
 public class MyLinkedList<T> implements LinkedList<T> {
 

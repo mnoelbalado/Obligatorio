@@ -1,5 +1,5 @@
-package um.edu.uy.tads.heap;
-import um.edu.uy.exceptions.EmptyHeapException;
+package um.edu.uy.TADS.Heap;
+import um.edu.uy.Exceptions.EmptyHeapException;
 
 
 public class MyHeap<K extends Comparable<K>, T> implements Heap<K, T> {

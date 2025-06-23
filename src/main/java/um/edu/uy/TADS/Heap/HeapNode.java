@@ -1,4 +1,4 @@
-package um.edu.uy.tads.heap;
+package um.edu.uy.TADS.Heap;
 
 public class HeapNode<K extends Comparable<K>, T> {
     private K key;

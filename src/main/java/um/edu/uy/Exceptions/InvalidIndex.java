@@ -1,4 +1,4 @@
-package um.edu.uy.exceptions;
+package um.edu.uy.Exceptions;
 
 public class InvalidIndex extends Exception {
     public InvalidIndex(String message) {

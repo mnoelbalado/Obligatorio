@@ -1,4 +1,4 @@
-package um.edu.uy.exceptions;
+package um.edu.uy.Exceptions;
 
 public class ElementAlreadyExists extends Exception {
     public ElementAlreadyExists(String message) {
