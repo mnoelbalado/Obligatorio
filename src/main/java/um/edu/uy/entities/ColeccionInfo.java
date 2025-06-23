@@ -3,30 +3,29 @@ package um.edu.uy.entities;
 import um.edu.uy.tads.linkedList.MyLinkedList;
 
 public class ColeccionInfo {
-    private String id; // Puede ser idSaga o idPelicula (si es individual)
+    private int id; // Puede ser idSaga o idPelicula (si es individual)
     private String nombre;
-    private MyLinkedList<String> idsPeliculas;
+    private MyLinkedList<Pelicula> peliculas;
     private int cantidadPeliculas;
     private double ingresosTotales;
 
-    public ColeccionInfo(String id, String nombre) {
+    public ColeccionInfo(int id, String nombre) {
         this.id = id;
         this.nombre = nombre;
-        this.idsPeliculas = new MyLinkedList<>();
+        this.peliculas = new MyLinkedList<>();
         this.cantidadPeliculas = 0;
         this.ingresosTotales = 0;
     }
 
-    public void agregarPelicula(String idPeli, double ingresos) {
-        idsPeliculas.add(idPeli);
+    public void agregarPelicula(Pelicula nombre) {
+        peliculas.add(nombre);
         cantidadPeliculas++;
-        ingresosTotales += ingresos;
     }
 
     // Getters
-    public String getId() { return id; }
+    public int getId() { return id; }
     public String getNombre() { return nombre; }
-    public MyLinkedList<String> getIdsPeliculas() { return idsPeliculas; }
+    public MyLinkedList<Pelicula> getIdsPeliculas() { return peliculas; }
     public int getCantidadPeliculas() { return cantidadPeliculas; }
     public double getIngresosTotales() { return ingresosTotales; }
 }
