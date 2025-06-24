@@ -99,15 +99,13 @@ public class CargarActoresYDirectores {
             String nombreActor = entrada.substring(inicioNombre, finNombre); // Extraigo el nombre del actor
 
             if (nombreActor.length() >= 3 && actoresVistos.get(nombreActor) == null) {
-                try {
-                    actoresVistos.put(nombreActor, true);
-                    Actor actor = actores.get(nombreActor);
-                    if (actor == null) {
-                        actor = new Actor(nombreActor);
-                        actores.put(nombreActor, actor);
-                    }
-                    actor.agregarPelicula(tempPeli);
-                } catch (ElementAlreadyExists ignored) {}
+                actoresVistos.put(nombreActor, true);
+                Actor actor = actores.get(nombreActor);
+                if (actor == null) {
+                    actor = new Actor(nombreActor);
+                    actores.put(nombreActor, actor);
+                }
+                actor.agregarPelicula(tempPeli);
             }
 
             posicionInicial = finNombre + 1;

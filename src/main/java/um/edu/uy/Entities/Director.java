@@ -1,14 +1,15 @@
 package um.edu.uy.Entities;
 
 import um.edu.uy.TADS.LinkedList.LinkedList;
+import um.edu.uy.TADS.LinkedList.MyLinkedList;
 
 public class Director {
     private String nombre;
-    private final LinkedList<Pelicula> listaPeliculas;
+    private LinkedList<Pelicula> listaPeliculas;
 
-    public Director(String nombre, LinkedList<Pelicula> listaPeliculas) {
+    public Director(String nombres) {
         this.nombre = nombre;
-        this.listaPeliculas = listaPeliculas;
+        this.listaPeliculas = new MyLinkedList<>();
 
     }
 
