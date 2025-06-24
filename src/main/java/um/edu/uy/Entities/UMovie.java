@@ -4,18 +4,19 @@ import com.opencsv.exceptions.CsvValidationException;
 import um.edu.uy.Cargas.CargarPeliculas;
 import um.edu.uy.Exceptions.InvalidIndex;
 import um.edu.uy.Exceptions.ValueNoExists;
-import um.edu.uy.TADS.HashTable.HashTable;
+import um.edu.uy.TADS.HashTable.MyHash;
+import um.edu.uy.TADS.HashTable.MyHash;
 
 
 import java.io.IOException;
 
 public class UMovie {
-    private HashTable<Integer, Pelicula> peliculas;
-    private HashTable<Integer, Genero> generos;
-    private HashTable<Integer, Coleccion> colecciones;
-    private HashTable<String, Idioma> idiomas;
-    private HashTable<String,Director> directores;
-    private HashTable<String, Actor> actores;
+    private MyHash<Integer, Pelicula> peliculas;
+    private MyHash<Integer, Genero> generos;
+    private MyHash<Integer, Coleccion> colecciones;
+    private MyHash<String, Idioma> idiomas;
+    private MyHash<String,Director> directores;
+    private MyHash<String, Actor> actores;
     private boolean datosCargados = false;
 
     //EN UMOVIE PONGAMOS SOLO EL MENU PRINCIPAL.
