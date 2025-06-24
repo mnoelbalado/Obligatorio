@@ -20,5 +20,6 @@ public interface Heap<K extends Comparable<K>, T> {
     K getKey();
 
     boolean containsKey(K key) throws EmptyHeapException;
+
 }
 

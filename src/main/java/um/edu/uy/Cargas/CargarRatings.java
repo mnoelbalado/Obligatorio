@@ -3,9 +3,9 @@ package um.edu.uy.Cargas;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
 import um.edu.uy.Exceptions.ValueNoExists;
-import um.edu.uy.TADS.HashTable.HashTable;
 import um.edu.uy.Entities.Rating;
 import um.edu.uy.Entities.Pelicula;
+import um.edu.uy.TADS.HashTable.MyHashTable;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -31,7 +31,7 @@ public class CargarRatings {
         }
     }
 
-    public void cargarDatos(HashTable<Integer, Pelicula> peliculas) throws CsvValidationException, IOException, ValueNoExists {
+    public void cargarDatos(MyHashTable<Integer, Pelicula> peliculas) throws CsvValidationException, IOException, ValueNoExists {
 
         int cantidadValida = 0;
 

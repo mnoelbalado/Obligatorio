@@ -2,7 +2,7 @@ package um.edu.uy.Entities;
 
 import um.edu.uy.TADS.LinkedList.LinkedList;
 
-public class Pelicula {
+public class Pelicula  {
     private int idPelicula;
     private String titulo;
     private String idiomaOriginal;
