@@ -1,13 +1,13 @@
 package um.edu.uy.Entities;
 
-import um.edu.uy.TADS.LinkedList.LinkedList;
+import um.edu.uy.TADS.LinkedList.MyLinkedList;
 
 public class Pelicula  {
     private int idPelicula;
     private String titulo;
     private String idiomaOriginal;
     private double ingresos;
-    private LinkedList<Rating> listaRating;
+    private MyLinkedList<Rating> ratings;
 
 //    //necesito para el tercer metodo:
 //    private String idSaga;
@@ -19,6 +19,7 @@ public class Pelicula  {
         this.titulo = titulo;
         this.idiomaOriginal = idiomaOriginal;
         this.ingresos = ingresos;
+        this.ratings = new MyLinkedList<>();
 
     }
 
@@ -55,7 +56,9 @@ public class Pelicula  {
         this.ingresos = ingresos;
     }
 
+    public MyLinkedList<Rating> getRatings(){return this.ratings;};
+
     public void agregarRating(Rating rating) {
-        listaRating.add(rating);
+        ratings.add(rating);
     }
 }

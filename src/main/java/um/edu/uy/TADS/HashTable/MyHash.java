@@ -5,9 +5,9 @@ import um.edu.uy.TADS.LinkedList.MyLinkedList;
 
 public interface MyHash<K extends Comparable<K>,V > {
 
-    public void put(K key, V value)
-            ;
-    public V get(K key) throws ValueNoExists;
+    public void put(K key, V value);
+
+    public V get(K key);
 
     public boolean contains(K key);
 
@@ -20,5 +20,7 @@ public interface MyHash<K extends Comparable<K>,V > {
     public MyLinkedList<NodoHash<K, V>> getNodesAsList(boolean reversed);
 
     String printOnScreen(boolean fully);
+
+    public MyLinkedList<K> getKeys();
 
 }

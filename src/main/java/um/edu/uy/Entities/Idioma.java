@@ -4,22 +4,12 @@ import um.edu.uy.TADS.LinkedList.LinkedList;
 import um.edu.uy.TADS.LinkedList.MyLinkedList;
 
 public class Idioma {
-    private String nombre;
     private String acronimo;
     private LinkedList<Pelicula> listaPeliculas;
 
     public Idioma(String acronimo) {
-        this.nombre = null;
         this.acronimo = acronimo;
         this.listaPeliculas = new MyLinkedList<>();
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
     }
 
     public String getAcronimo() {

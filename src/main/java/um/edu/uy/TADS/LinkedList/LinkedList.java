@@ -9,7 +9,7 @@ public interface LinkedList<T> {
 
     void remove(T element) throws ElementNotFound; //elimina la primera aparición del elemento en la lista, lanza ElementNotFound si el elemento no está.
 
-    T get(int index) throws InvalidIndex; //devuelve el elemento en la posición indicada, lanza InvalidIndex si el índice está fuera de rango.
+    T get(int index); //devuelve el elemento en la posición indicada, lanza InvalidIndex si el índice está fuera de rango.
 
     boolean contains(T element); //devuelve true si el elemento está en la lista, false si no.
 
