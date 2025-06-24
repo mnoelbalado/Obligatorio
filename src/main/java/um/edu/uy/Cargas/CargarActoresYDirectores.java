@@ -6,7 +6,8 @@ import um.edu.uy.Entities.Director;
 import um.edu.uy.Entities.Pelicula;
 import um.edu.uy.Exceptions.ElementAlreadyExists;
 import um.edu.uy.Exceptions.ValueNoExists;
-import um.edu.uy.TADS.HashTable.HashTable;
+import um.edu.uy.TADS.HashTable.MyHash;
+import um.edu.uy.TADS.HashTable.MyHash;
 import um.edu.uy.TADS.HashTable.MyHashTable;
 import com.opencsv.exceptions.CsvValidationException;
 
@@ -17,8 +18,8 @@ import java.io.InputStreamReader;
 
 public class CargarActoresYDirectores {
     private CSVReader lectorCSV;
-    private final HashTable<String, Director> directores;
-    private final HashTable<String, Actor> actores;
+    private final MyHash<String, Director> directores;
+    private final MyHash<String, Actor> actores;
 
     private static final String TRABAJO_DIRECTOR = "'job': 'Director'";
     private static final String CLAVE_NOMBRE = "'name': '";
@@ -39,7 +40,7 @@ public class CargarActoresYDirectores {
         }
     }
 
-    public void cargarDatos(HashTable<Integer, Pelicula> listaDePeiculas) throws CsvValidationException, IOException, ValueNoExists {
+    public void cargarDatos(MyHash<Integer, Pelicula> listaDePeiculas) throws CsvValidationException, IOException, ValueNoExists {
 
         System.out.println("Iniciando carga de créditos...");
 
@@ -70,18 +71,18 @@ public class CargarActoresYDirectores {
 
     }
 
-    public HashTable<String, Director> getDirectores() {
+    public MyHash<String, Director> getDirectores() {
         return directores;
     }
 
-    public HashTable<String, Actor> getActores() {
+    public MyHash<String, Actor> getActores() {
         return actores;
     }
 
     private void procesarActores(String entrada, Pelicula tempPeli) throws ValueNoExists {
         int posicionInicial = 0;
         int longitud = entrada.length();
-        HashTable<String, Boolean> actoresVistos = new MyHashTable<>(100);
+        MyHash<String, Boolean> actoresVistos = new MyHashTable<>(100);
 
         while (posicionInicial < longitud) {
             int inicioNombre = entrada.indexOf(CLAVE_NOMBRE_ACTOR, posicionInicial);
