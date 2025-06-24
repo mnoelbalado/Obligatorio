@@ -18,7 +18,7 @@ public class CargarRatings {
     private String[] lineaDatos;
 
 
-    public CargarRatings(boolean developerMode) {
+    public CargarRatings() {
 
         try{
             InputStream archivoDatos = CargarPeliculas.class.getResourceAsStream("/ratings_1mm.csv");

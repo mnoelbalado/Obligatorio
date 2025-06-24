@@ -6,9 +6,10 @@ public class Director {
     private String nombre;
     private final LinkedList<Pelicula> listaPeliculas;
 
-    public Director(LinkedList<Pelicula> listaPeliculas, String nombre) {
-        this.listaPeliculas = listaPeliculas;
+    public Director(String nombre, LinkedList<Pelicula> listaPeliculas) {
         this.nombre = nombre;
+        this.listaPeliculas = listaPeliculas;
+
     }
 
     public String getNombre() {
