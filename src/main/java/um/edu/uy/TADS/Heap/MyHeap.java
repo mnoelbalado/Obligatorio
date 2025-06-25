@@ -80,17 +80,17 @@ public class MyHeap<K extends Comparable<K>, T> implements Heap<K, T> {
         }
     }
 
-    private void swap(int i, int j) {
-        HeapNode<K, T> temp = heap[i];
-        heap[i] = heap[j];
-        heap[j] = temp;
+    private void swap(int index1, int index2) {
+        HeapNode<K, T> temp = heap[index1];
+        heap[index1] = heap[index2];
+        heap[index2] = temp;
     }
 
     private void resize() {
         int newCapacity = heap.length * 2; //Dobla el largo
         HeapNode<K, T>[] newHeap = new HeapNode[newCapacity];
-        for (int i = 0; i < heap.length; i++) { // Guarda todos los valores
-            newHeap[i] = heap[i];
+        for (int nodoIndex = 0; nodoIndex < heap.length; nodoIndex++) { // Guarda todos los valores
+            newHeap[nodoIndex] = heap[nodoIndex];
         }
         heap = newHeap;
     }

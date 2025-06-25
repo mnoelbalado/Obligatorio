@@ -70,7 +70,7 @@ public class MyLinkedList<T> implements LinkedList<T> {
         }
 
         Node current = head;
-        for (int i = 0; i < index; i++)
+        for (int nodoIndex = 0; nodoIndex < index; nodoIndex++)
             current = current.next;
 
         return current.data;

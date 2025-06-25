@@ -6,22 +6,40 @@ import um.edu.uy.Exceptions.ValueNoExists;
 import java.io.IOException;
 
 public class CargarDatos {
-    public CargarPeliculas  cargaPeliculas;
-    public CargarRatings cargaRatings;
-    public CargarActoresYDirectores cargarActoresYDirectores;
+    private CargarPeliculas  cargaPeliculas;
+    private CargarRatings cargaRatings;
+    private CargarActoresYDirectores cargarActoresYDirectores;
+    private boolean datosCargados = false;
 
-    public CargarDatos() {
+    public void cargarDatos(){
         cargaPeliculas = new CargarPeliculas();
         cargaRatings = new CargarRatings();
-        cargarActoresYDirectores = new CargarActoresYDirectores();
+
+
+        //cargarActoresYDirectores = new CargarActoresYDirectores(); TERMINAR
         try {
             cargaRatings.cargarRatingsAPeliculas(cargaPeliculas.getPeliculas());
-        } catch (CsvValidationException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (ValueNoExists e) {
+        } catch (CsvValidationException | IOException | ValueNoExists e) {
             throw new RuntimeException(e);
         }
+        datosCargados = true;
     }
+
+    public CargarPeliculas getCargaPeliculas() {
+        return cargaPeliculas;
+    }
+
+    public CargarRatings getCargaRatings() {
+        return cargaRatings;
+    }
+
+    public CargarActoresYDirectores getCargarActoresYDirectores() {
+        return cargarActoresYDirectores;
+    }
+
+    public boolean isDatosCargados() {
+        return datosCargados;
+    }
+
+    public boolean cargado(){return datosCargados;}
 }

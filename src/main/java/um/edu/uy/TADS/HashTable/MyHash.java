@@ -17,10 +17,6 @@ public interface MyHash<K extends Comparable<K>,V > {
 
     public int size();
 
-    public MyLinkedList<NodoHash<K, V>> getNodesAsList(boolean reversed);
-
-    String printOnScreen(boolean fully);
-
     public MyLinkedList<K> getKeys();
 
 }

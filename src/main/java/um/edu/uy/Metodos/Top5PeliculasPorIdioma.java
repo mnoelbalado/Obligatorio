@@ -9,7 +9,7 @@ import um.edu.uy.TADS.HashTable.MyHashTable;
 import um.edu.uy.TADS.Heap.MyHeap;
 import um.edu.uy.TADS.LinkedList.MyLinkedList;
 
-public class Top5PeliculasPorIdioma {
+public class Top5PeliculasPorIdioma implements  Consulta  {
     CargarDatos datos;
 
     public Top5PeliculasPorIdioma(CargarDatos datos){
@@ -17,14 +17,14 @@ public class Top5PeliculasPorIdioma {
     }
 
     public void top5PeliculasPorIdioma(String idioma){
-        MyHashTable<Integer, Pelicula> peliculas = datos.cargaPeliculas.getPeliculas();
-        MyHashTable<String, Idioma> idiomas = datos.cargaPeliculas.getIdiomas();
+        MyHashTable<Integer, Pelicula> peliculas = datos.getCargaPeliculas().getPeliculas();
+        MyHashTable<String, Idioma> idiomas = datos.getCargaPeliculas().getIdiomas();
 
         MyHeap<Integer, Integer> cantidadRatings = new MyHeap<>(false);
 
         MyLinkedList<Integer> keys = peliculas.getKeys();
-        for (int i = 0; i < keys.size(); i++) {
-            Integer idPelicula = keys.get(i);
+        for (int  peliculaIndex= 0; peliculaIndex < keys.size(); peliculaIndex++) {
+            Integer idPelicula = keys.get(peliculaIndex);
             Pelicula pelicula = peliculas.get(idPelicula);
             String idiomaPelicula = pelicula.getIdiomaOriginal();
             MyLinkedList<Rating> ratingsPelicula = pelicula.getRatings();
@@ -47,7 +47,7 @@ public class Top5PeliculasPorIdioma {
             String tituloPelicula = pelicula.getTitulo();
             String idiomaPelicula = pelicula.getIdiomaOriginal();
 
-            System.out.println( recorrido+1 + ") " + peliculaid + " ,"  + tituloPelicula + " , " + cantidadDeRatings + " , " + idiomaPelicula);
+            System.out.println( recorrido+1 + ") " + peliculaid + ", "  + tituloPelicula + ", " + cantidadDeRatings + ", " + idiomaPelicula);
             try {
                 cantidadRatings.delete();
             } catch (EmptyHeapException e) {
@@ -58,4 +58,8 @@ public class Top5PeliculasPorIdioma {
     }
 
 
+    @Override
+    public void realizarConsulta() {
+        this.top5PeliculasPorIdioma("en");
+    }
 }
