@@ -70,7 +70,7 @@ public class CargarPeliculas {
                 ganancias = Long.parseLong(dataLine[13]);
             } catch (NumberFormatException ignored) {}
 
-            Pelicula pelicula = new Pelicula(idPelicula, dataLine[8], dataLine[12], ganancias);
+            Pelicula pelicula = new Pelicula(idPelicula, dataLine[8], dataLine[7], ganancias);
             peliculas.put(idPelicula, pelicula);
 
             LinkedList<Genero> listaGeneros = searchGeneros(dataLine[3]);

@@ -27,9 +27,6 @@ public class CargarRatings {
     }
 
     public void cargarRatingsAPeliculas(MyHashTable<Integer, Pelicula> peliculas) throws CsvValidationException, IOException, ValueNoExists {
-
-        int cantidadValida = 0;
-
         System.out.println("Iniciando carga de evaluaciones...");
 
         while ((lineaDatos = lectorCSV.readNext()) != null) {
@@ -41,10 +38,8 @@ public class CargarRatings {
                 idUsuario = Integer.parseInt(lineaDatos[0]);
                 idPelicula = Integer.parseInt(lineaDatos[1]);
                 rating = Float.parseFloat(lineaDatos[2]);
-                fecha = new Date(Long.parseLong(lineaDatos[3])*1000);
-                cantidadValida++;
-            } catch (Exception e) {continue;}
-
+            } catch (NumberFormatException e) {continue;}
+            fecha = new Date(Long.parseLong(lineaDatos[3])*1000);
 
             if (idUsuario >= 0) {
                 Pelicula pelicula = peliculas.get(idPelicula);

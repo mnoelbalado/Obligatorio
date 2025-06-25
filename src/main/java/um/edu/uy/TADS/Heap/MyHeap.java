@@ -1,6 +1,6 @@
 package um.edu.uy.TADS.Heap;
-import um.edu.uy.Exceptions.EmptyHeapException;
 
+import um.edu.uy.Exceptions.EmptyHeapException;
 
 public class MyHeap<K extends Comparable<K>, T> implements Heap<K, T> {
     private int size;
@@ -11,22 +11,6 @@ public class MyHeap<K extends Comparable<K>, T> implements Heap<K, T> {
         this.isMin = isMin;
         this.size = 0;
         this.heap = new HeapNode[10]; // Initial size can be adjusted as needed
-    }
-
-    public MyHeap(boolean isMin, K[] array) {
-        this.isMin = isMin;
-        this.size = array.length;
-        this.heap = new HeapNode[array.length];
-
-        // Se insertan los elementos del heap al array
-        for (int i = 0; i < array.length; i++) {
-            heap[i] = new HeapNode<>(array[i], null);
-        }
-
-        // Ordenar Heap
-        for (int i = size / 2 - 1; i >= 0; i--) {
-            heapify(i);
-        }
     }
 
     public void put(K key, T value) {
@@ -42,15 +26,7 @@ public class MyHeap<K extends Comparable<K>, T> implements Heap<K, T> {
         int posicion = size - 1;
         while (posicion > 0) {
             int posicionPadre = (posicion - 1) / 2;
-            boolean comp;
-            if (this.isMin){
-                comp = compare(heap[posicion].getKey(), heap[posicionPadre].getKey()) < 0;
-            }
-            else{
-                comp = compare(heap[posicion].getKey(), heap[posicionPadre].getKey()) > 0;
-            }
-            if (comp) {
-                // Va a estar siempre intercambiando posicion con el padre hasta que termine el while
+            if (compare(heap[posicion].getKey(), heap[posicionPadre].getKey()) < 0) {
                 swap(posicion, posicionPadre);
                 posicion = posicionPadre;
             } else {
@@ -59,7 +35,6 @@ public class MyHeap<K extends Comparable<K>, T> implements Heap<K, T> {
         }
     }
 
-    /** Borra la raiz, si es maxheap el mas grande, si es minheap el mas chico **/
     public T delete() throws EmptyHeapException {
         if (isEmpty()) {
             throw new EmptyHeapException("Heap esta vacio");
@@ -89,27 +64,19 @@ public class MyHeap<K extends Comparable<K>, T> implements Heap<K, T> {
     private void heapify(int index) {
         int hijoIz = 2 * index + 1;
         int hijoDer = 2 * index + 2;
-        int extremo = index; // Mayor o menor depende de isMin
+        int Extremo = index; // Mayor o menor depende de isMin
 
-        if (isMin) { // min heap
-            if (hijoIz < size && compare(heap[hijoIz].getKey(), heap[extremo].getKey()) < 0) {
-                extremo = hijoIz;
-            }
-            if (hijoDer < size && compare(heap[hijoDer].getKey(), heap[extremo].getKey()) < 0) {
-                extremo = hijoDer;
-            }
-        } else { // max heap
-            if (hijoIz < size && compare(heap[hijoIz].getKey(), heap[extremo].getKey()) > 0) {
-                extremo = hijoIz;
-            }
-            if (hijoDer < size && compare(heap[hijoDer].getKey(), heap[extremo].getKey()) > 0) {
-                extremo = hijoDer;
-            }
+        if (hijoIz < size && compare(heap[hijoIz].getKey(), heap[Extremo].getKey()) < 0) {
+            Extremo = hijoIz;
         }
 
-        if (extremo != index) {
-            swap(index, extremo);
-            heapify(extremo);
+        if (hijoDer < size && compare(heap[hijoDer].getKey(), heap[Extremo].getKey()) < 0) {
+            Extremo = hijoDer;
+        }
+
+        if (Extremo != index) {
+            swap(index, Extremo);
+            heapify(Extremo);
         }
     }
 
@@ -151,14 +118,5 @@ public class MyHeap<K extends Comparable<K>, T> implements Heap<K, T> {
     public K getKey(){
         return heap[0].getKey();
     }
-
-    @Override
-    public boolean containsKey(K key) throws EmptyHeapException {
-        if (isEmpty()) {
-            throw new EmptyHeapException("Heap esta vacio");
-        }
-    return false;
-    }
-
 
 }
