@@ -80,12 +80,12 @@ public class MyHashTable<K extends Comparable<K>, V > implements MyHash<K, V> {
     }
 
     @Override
-    public V get(K key) throws ValueNoExists {
+    public V get(K key) {
         NodoHash<K, V> nodo = getNodo(key);
         if(nodo != null) {
             return nodo.getValue();
         }
-        throw new ValueNoExists("No existe");
+        return null;
     }
 
     @Override
@@ -169,6 +169,16 @@ public class MyHashTable<K extends Comparable<K>, V > implements MyHash<K, V> {
             }
         }
 
+        return temp;
+    }
+
+    public MyLinkedList<K> getKeys(){
+        MyLinkedList<K> temp = new MyLinkedList<>();
+        for (int i = 0; i<this.capacity; i++){
+            if (this.tablahash[i] != null){
+                temp.add((K) this.tablahash[i].getKey());
+            }
+        }
         return temp;
     }
 
