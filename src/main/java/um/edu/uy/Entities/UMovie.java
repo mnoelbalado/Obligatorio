@@ -2,11 +2,18 @@ package um.edu.uy.Entities;
 
 import um.edu.uy.Cargas.CargarDatos;
 import um.edu.uy.Metodos.*;
+import um.edu.uy.TADS.HashTable.MyHash;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class UMovie {
+    private MyHash<Integer, Pelicula> peliculas;
+    private MyHash<Integer, Genero> generos;
+    private MyHash<Integer, Coleccion> colecciones;
+    private MyHash<String, Idioma> idiomas;
+    private MyHash<String, Director> directores;
+    private MyHash<String, Actor> actores;
 
     private CargarDatos datos;
 
