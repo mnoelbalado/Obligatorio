@@ -63,13 +63,14 @@ public class MyLinkedList<T> implements LinkedList<T> {
     }
 
     @Override
-    public T get(int index) throws InvalidIndex {
+    public T get(int index) {
         if (index < 0 || index >= size) {
-            throw new InvalidIndex("Índice fuera de rango: " + index);
+            System.out.println("Índice fuera de rango: " + index);
+            return null;
         }
 
         Node current = head;
-        for (int i = 0; i < index; i++)
+        for (int nodoIndex = 0; nodoIndex < index; nodoIndex++)
             current = current.next;
 
         return current.data;

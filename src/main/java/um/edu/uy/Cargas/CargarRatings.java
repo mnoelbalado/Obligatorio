@@ -7,10 +7,7 @@ import um.edu.uy.Entities.Rating;
 import um.edu.uy.Entities.Pelicula;
 import um.edu.uy.TADS.HashTable.MyHashTable;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.Date;
 
 public class CargarRatings {
@@ -21,20 +18,15 @@ public class CargarRatings {
     public CargarRatings() {
 
         try{
-            InputStream archivoDatos = CargarPeliculas.class.getResourceAsStream("/ratings_1mm.csv");
-            assert archivoDatos != null;
-            BufferedReader bufferLectura = new BufferedReader(new InputStreamReader(archivoDatos));
-            this.lectorCSV = new CSVReader(bufferLectura);
+            FileInputStream archivoDatos = new FileInputStream("resources/ratings_1mm.csv");
+            this.lectorCSV = new CSVReader(new InputStreamReader(archivoDatos));
             this.lineaDatos = lectorCSV.readNext();
         } catch (IOException | CsvValidationException ignored) { // No deberia de ocurrir, pero si ocurre, se imprime el error
             System.out.println("Error crítico al cargar el archivo de evaluaciones. Asegúrese de que el archivo ratings_1mm.csv se encuentre en la carpeta resources del proyecto.");
         }
     }
 
-    public void cargarDatos(MyHashTable<Integer, Pelicula> peliculas) throws CsvValidationException, IOException, ValueNoExists {
-
-        int cantidadValida = 0;
-
+    public void cargarRatingsAPeliculas(MyHashTable<Integer, Pelicula> peliculas) throws CsvValidationException, IOException, ValueNoExists {
         System.out.println("Iniciando carga de evaluaciones...");
 
         while ((lineaDatos = lectorCSV.readNext()) != null) {
@@ -46,10 +38,8 @@ public class CargarRatings {
                 idUsuario = Integer.parseInt(lineaDatos[0]);
                 idPelicula = Integer.parseInt(lineaDatos[1]);
                 rating = Float.parseFloat(lineaDatos[2]);
-                fecha = new Date(Long.parseLong(lineaDatos[3])*1000);
-                cantidadValida++;
-            } catch (Exception e) {continue;}
-
+            } catch (NumberFormatException e) {continue;}
+            fecha = new Date(Long.parseLong(lineaDatos[3])*1000);
 
             if (idUsuario >= 0) {
                 Pelicula pelicula = peliculas.get(idPelicula);

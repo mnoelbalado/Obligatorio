@@ -31,7 +31,7 @@ public class CargarPeliculas {
 
     public CargarPeliculas() {
         try{
-           FileInputStream archivoCSV = new FileInputStream("movies_metadata.csv");
+           FileInputStream archivoCSV = new FileInputStream("resources/movies_metadata.csv");
            this.lectorCSV = new CSVReader(new InputStreamReader(archivoCSV));
             lectorCSV.readNext(); // Se lee la primera línea (cabecera) y se descarta
         } catch (IOException ignored) { //No deberia de ocurrir, pero si ocurre, se imprime el error
@@ -58,7 +58,6 @@ public class CargarPeliculas {
 
         String[] dataLine;
         while ((dataLine = lectorCSV.readNext()) != null) {
-
             int idPelicula;
             try {
                 idPelicula = Integer.parseInt(dataLine[5]);
@@ -71,7 +70,7 @@ public class CargarPeliculas {
                 ganancias = Long.parseLong(dataLine[13]);
             } catch (NumberFormatException ignored) {}
 
-            Pelicula pelicula = new Pelicula(idPelicula, dataLine[8], dataLine[12], ganancias);
+            Pelicula pelicula = new Pelicula(idPelicula, dataLine[8], dataLine[7], ganancias);
             peliculas.put(idPelicula, pelicula);
 
             LinkedList<Genero> listaGeneros = searchGeneros(dataLine[3]);

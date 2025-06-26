@@ -135,16 +135,9 @@ public class CargarActoresYDirectores {
 
             String nombreDirector = entrada.substring(inicioNombre, finNombre);
 
-            try {
-                Director director = new Director(nombreDirector);
-                directores.put(nombreDirector, director);
-                director.agregarPelicula(tempPeli);
-            } catch (ElementAlreadyExists ignored) {
-                Director director = directores.get(nombreDirector);
-                if (director != null) { //Siempre se deberia cumplir esta condicion
-                    director.agregarPelicula(tempPeli);
-                }
-            }
+            Director director = new Director(nombreDirector);
+            directores.put(nombreDirector, director);
+            director.agregarPelicula(tempPeli);
 
             posicionInicial = posDirector + TRABAJO_DIRECTOR.length();
         }
