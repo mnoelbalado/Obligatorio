@@ -165,7 +165,16 @@ public class MyHashTable<K extends Comparable<K>, V > implements MyHash<K, V> {
     }
 
 
-
+    @Override
+    public MyLinkedList<V> getValues() {
+        MyLinkedList<V> values = new MyLinkedList<>();
+        MyLinkedList<K> keys = getKeys();
+        for (int i = 0; i < keys.size(); i++) {
+            K key = keys.get(i);
+            values.add(get(key));
+        }
+        return values;
+    }
 
 
 

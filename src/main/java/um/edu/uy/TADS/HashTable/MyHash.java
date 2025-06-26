@@ -19,4 +19,5 @@ public interface MyHash<K extends Comparable<K>,V > {
 
     public MyLinkedList<K> getKeys();
 
+    public MyLinkedList<V> getValues();
 }
