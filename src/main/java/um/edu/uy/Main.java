@@ -7,7 +7,6 @@ import um.edu.uy.Metodos.Top10PeliculasMejorCalificacionPorUsuarios;
 import um.edu.uy.Metodos.Top5PeliculasPorIdioma;
 import um.edu.uy.TADS.HashTable.MyHashTable;
 
-//Aca hago el menu
 public class Main {
     public static void main(String[] args)  {
         UMovie um = new UMovie();
