@@ -1,5 +1,6 @@
 package um.edu.uy.TADS.HashTable;
 import um.edu.uy.Exceptions.ValueNoExists;
+import um.edu.uy.TADS.LinkedList.LinkedList;
 import um.edu.uy.TADS.LinkedList.MyLinkedList;
 
 
@@ -164,9 +165,18 @@ public class MyHashTable<K extends Comparable<K>, V > implements MyHash<K, V> {
         return temp;
     }
 
+    @Override
+    public LinkedList<V> getValues() {
+        MyLinkedList<V> values = new MyLinkedList<>();
 
+        for (int index = 0; index < this.capacity; index++) {
+            if (this.tablahash[index] != null) {
+                values.add((V) this.tablahash[index].getValue());
+            }
+        }
 
-
+        return values;
+    }
 
 
 }

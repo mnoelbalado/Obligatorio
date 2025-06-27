@@ -1,5 +1,6 @@
 package um.edu.uy.TADS.HashTable;
 import um.edu.uy.Exceptions.ValueNoExists;
+import um.edu.uy.TADS.LinkedList.LinkedList;
 import um.edu.uy.TADS.LinkedList.MyLinkedList;
 
 
@@ -19,4 +20,5 @@ public interface MyHash<K extends Comparable<K>,V > {
 
     public MyLinkedList<K> getKeys();
 
+    LinkedList<V> getValues();
 }
