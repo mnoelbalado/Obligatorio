@@ -17,15 +17,15 @@ public class UsuarioConMasCalificacionesPorGenero implements Consulta {
     }
 
     public void usuarioConMasCalificacionesPorGenero(){
-        // Primero, probemos el enfoque directo por películas
+
         MyHash<Integer, Pelicula> listaDePeliculas = datos.getPeliculas();
         LinkedList<Pelicula> todasLasPeliculas = listaDePeliculas.getValues();
 
-        // Crear mapa: GeneroID -> (UsuarioID -> Cantidad)
+
         MyHashTable<Integer, MyHashTable<Integer, Integer>> ratingsePorGenero = new MyHashTable<>(1001);
 
 
-        // Recorrer todas las películas
+
         for (int p = 0; p < todasLasPeliculas.size(); p++) {
             Pelicula pelicula = todasLasPeliculas.get(p);
             if (pelicula == null) continue;
