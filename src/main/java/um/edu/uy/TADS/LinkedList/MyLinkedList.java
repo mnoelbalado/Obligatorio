@@ -101,4 +101,20 @@ public class MyLinkedList<T> implements LinkedList<T> {
         head = null;
         size = 0;
     }
+
+    @Override
+    public MyLinkedList<T> getValues() {
+        MyLinkedList<T> values = new MyLinkedList<>();
+
+        Node current = this.head; // Cambiar 'first' por 'head'
+        while (current != null) {
+            values.add(current.data); // Cambiar 'getData()' por 'data'
+            current = current.next; // Cambiar 'getNext()' por 'next'
+        }
+
+        return values; // Agregar return que faltaba
+
+    }
+
+
 }

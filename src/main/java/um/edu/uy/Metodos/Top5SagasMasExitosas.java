@@ -17,6 +17,8 @@ public class Top5SagasMasExitosas implements Consulta {
 
     @Override
     public void realizarConsulta() {
+        long inicio = System.currentTimeMillis();
+
         MyHash<Integer, Coleccion> colecciones = datos.getColecciones();
         MyHash<Integer, Pelicula> peliculas = datos.getPeliculas();
 // Crear max heap para guardar colecciones ordenadas por ingresos
@@ -72,5 +74,7 @@ public class Top5SagasMasExitosas implements Consulta {
                 break;
             }
         }
+
+        System.out.println("Tiempo de ejecución: " + (System.currentTimeMillis() - inicio) + "ms");
     }
 }

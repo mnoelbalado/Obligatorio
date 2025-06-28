@@ -1,29 +1,48 @@
 package um.edu.uy.Entities;
 
+import um.edu.uy.TADS.HashTable.MyHash;
+import um.edu.uy.TADS.HashTable.MyHashTable;
+import um.edu.uy.TADS.LinkedList.MyLinkedList;
+
 public class Usuario {
-       private String idUsuario;
-       private String nombre;
+       private int idUsuario;
+       private MyLinkedList<Rating> ratings;
 
        //constructor
-       public Usuario(String idUsuario, String nombre) {
+       public Usuario(int idUsuario) {
               this.idUsuario = idUsuario;
-              this.nombre = nombre;
+              this.ratings = new MyLinkedList<>();
        }
 
        //getters y setters
-       public String getIdUsuario() {
+       public int getIdUsuario() {
               return idUsuario;
        }
 
-       public void setIdUsuario(String idUsuario) {
+       public void setIdUsuario(int idUsuario) {
               this.idUsuario = idUsuario;
        }
 
-       public String getNombre() {
-              return nombre;
+       public void agregarRating(Rating rating) {
+              ratings.add(rating);
        }
 
-       public void setNombre(String nombre) {
-              this.nombre = nombre;
+       public MyLinkedList<Rating> getRatings() {
+              return ratings;
+       }
+
+       public int cantidadRatings(){
+              return ratings.size();
+       }
+
+       public int cantidadRatingsGenero(Genero genero, MyHash<Integer, Pelicula> peliculas){
+              int cantidad = 0;
+              for (int i = 0; i<ratings.size(); i++){
+                     Rating rating = ratings.get(i);
+                     if (peliculas.get(rating.getIdPelciula()).getGeneros().contains(genero)){
+                            cantidad++;
+                     }
+              }
+              return cantidad;
        }
 }
