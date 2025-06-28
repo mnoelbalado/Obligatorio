@@ -18,4 +18,6 @@ public interface LinkedList<T> {
     boolean isEmpty(); //devuelve true si la lista está vacía, false si no lo esta.
 
     void clear(); //elimina todos los elementos de la lista
+
+    MyLinkedList<T> getValues();
 }

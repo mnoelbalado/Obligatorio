@@ -8,7 +8,6 @@ import um.edu.uy.TADS.HashTable.MyHash;
 
 import java.io.IOException;
 
-
 public class CargarDatos {
     private CargarPeliculas cargaPeliculas;
     private CargarRatings cargaRatings;
@@ -16,19 +15,22 @@ public class CargarDatos {
     private boolean datosCargados = false;
 
     public void cargarDatos() {
+
         cargaPeliculas = new CargarPeliculas();
         cargaRatings = new CargarRatings();
+        cargarActoresYDirectores = new CargarActoresYDirectores();
 
         try {
             cargaRatings.cargarRatingsAPeliculas(cargaPeliculas.getPeliculas());
+            cargarActoresYDirectores.cargarDatos(cargaPeliculas.getPeliculas());
+
         } catch (CsvValidationException | IOException | ValueNoExists e) {
+            System.out.println("Error durante la carga: " + e.getMessage());
             throw new RuntimeException(e);
         }
 
-        // Si implementás esto más adelante:
-        // cargarActoresYDirectores = new CargarActoresYDirectores();
-
         datosCargados = true;
+        System.out.println("Carga de datos completada exitosamente.");
     }
 
     // Getter para cargarPeliculas

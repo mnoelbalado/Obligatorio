@@ -70,15 +70,22 @@ public class CargarPeliculas {
                 ganancias = Long.parseLong(dataLine[13]);
             } catch (NumberFormatException ignored) {}
 
-            Pelicula pelicula = new Pelicula(idPelicula, dataLine[8], dataLine[7], ganancias);
-            peliculas.put(idPelicula, pelicula);
+            String generoDato = dataLine[3];
 
-            LinkedList<Genero> listaGeneros = searchGeneros(dataLine[3]);
+            MyLinkedList<Genero> listaGeneros = searchGeneros(generoDato);
 
             for (int iter = 0; iter < listaGeneros.size(); iter++) {
                 Genero genero = listaGeneros.get(iter); // declaramos bien el objeto desde la lista
 
                 this.generos.put(genero.getId(), genero);
+            }
+
+            Pelicula pelicula = new Pelicula(idPelicula, dataLine[8], dataLine[7], ganancias, listaGeneros);
+            peliculas.put(idPelicula, pelicula);
+
+            for (int iter = 0; iter < listaGeneros.size(); iter++) {
+                Genero genero = listaGeneros.get(iter); // declaramos bien el objeto desde la lista
+
                 genero.agregarPelicula(pelicula);
             }
 
@@ -114,8 +121,8 @@ public class CargarPeliculas {
         return colecciones;
     }
 
-    private LinkedList<Genero> searchGeneros(String entrada){
-        LinkedList<Genero> listaGeneros = new MyLinkedList<>();
+    private MyLinkedList<Genero> searchGeneros(String entrada){
+        MyLinkedList<Genero> listaGeneros = new MyLinkedList<>();
         if (entrada == null || entrada.trim().isEmpty()) {
             return listaGeneros;
         }
