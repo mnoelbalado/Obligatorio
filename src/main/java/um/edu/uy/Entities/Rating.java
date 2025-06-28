@@ -9,7 +9,6 @@ public class Rating {
     private Date fecha;
 
     //constructor
-
     public Rating(int idPelciula, float rating, int idUsuario, Date fecha) {
         this.idPelciula = idPelciula;
         this.rating = rating;

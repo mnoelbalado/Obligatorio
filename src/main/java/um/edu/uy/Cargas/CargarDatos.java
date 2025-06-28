@@ -38,7 +38,7 @@ public class CargarDatos {
         return cargaPeliculas;
     }
 
-    // Getter directo para películas (acceso externo más cómodo)
+    // Getter directo para películas
     public MyHash<Integer, Pelicula> getPeliculas() {
         return cargaPeliculas.getPeliculas();
     }
@@ -48,7 +48,7 @@ public class CargarDatos {
         return cargaPeliculas.getColecciones();
     }
 
-    // Getter para ratings y actores/directores (si los usás)
+    // Getter para ratings y actores/directores
     public CargarRatings getCargaRatings() {
         return cargaRatings;
     }

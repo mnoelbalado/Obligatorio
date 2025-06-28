@@ -10,7 +10,7 @@ public class Director {
     private double sumaCalificaciones;
 
     public Director(String nombres) {
-        this.nombre = nombres; // ✅ CORREGIDO: Asignar el parámetro correcto
+        this.nombre = nombres;
         this.listaPeliculas = new MyLinkedList<>();
         this.cantidadCalificaciones = 0;
         this.sumaCalificaciones = 0;
@@ -31,7 +31,7 @@ public class Director {
     public void agregarPelicula(Pelicula tempPelicula) {
         this.listaPeliculas.add(tempPelicula);
 
-        // ✅ AGREGADO: Heredar calificaciones de la película
+
         if (tempPelicula != null && tempPelicula.getRatings() != null) {
             int calificacionesPelicula = tempPelicula.getRatings().size();
             double sumaPelicula = 0.0;
@@ -41,10 +41,10 @@ public class Director {
                 try {
                     Rating rating = tempPelicula.getRatings().get(i);
                     if (rating != null) {
-                        sumaPelicula += rating.getRating(); // Asumiendo que Rating tiene getCalificacion()
+                        sumaPelicula += rating.getRating();
                     }
                 } catch (Exception e) {
-                    // Continuar si hay error con un rating específico
+
                 }
             }
 
@@ -81,7 +81,7 @@ public class Director {
         return sumaCalificaciones / cantidadCalificaciones;
     }
 
-    // ✅ MÉTODO ADICIONAL: Para debug y verificación
+
     public void recalcularCalificaciones() {
         this.cantidadCalificaciones = 0;
         this.sumaCalificaciones = 0.0;

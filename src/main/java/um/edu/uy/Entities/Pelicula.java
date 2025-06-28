@@ -10,9 +10,6 @@ public class Pelicula  {
     private MyLinkedList<Rating> ratings;
     private MyLinkedList<Genero> generosPelicula;
 
-//    //necesito para el tercer metodo:
-//    private String idSaga;
-//    private String tituloSaga;
 
     //constructor
     public Pelicula(int idPelicula, String titulo, String idiomaOriginal, double ingresos, MyLinkedList<Genero> generos) {

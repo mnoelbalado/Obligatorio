@@ -19,13 +19,11 @@ public class Top5PeliculasPorIdioma implements Consulta {
     public void Top5PeliculasPorIdioma(){
         MyHashTable<Integer, Pelicula> peliculas = datos.getCargaPeliculas().getPeliculas();
 
-        // OPTIMIZACIÓN: Un solo recorrido para agrupar por idioma
-        // Mapa: Idioma -> Heap de películas ordenadas por cantidad de ratings
         MyHashTable<String, MyHeap<Integer, Integer>> peliculasPorIdioma = new MyHashTable<>(100);
 
         MyLinkedList<Integer> keysPeliculas = peliculas.getKeys();
 
-        // Un solo recorrido: agrupar películas por idioma y ordenar por ratings
+
         for (int i = 0; i < keysPeliculas.size(); i++) {
             Integer idPelicula = keysPeliculas.get(i);
             Pelicula pelicula = peliculas.get(idPelicula);
@@ -36,14 +34,14 @@ public class Top5PeliculasPorIdioma implements Consulta {
             MyLinkedList<Rating> ratingsPelicula = pelicula.getRatings();
             if (ratingsPelicula.isEmpty()) continue;
 
-            // Obtener o crear heap para este idioma
+
             MyHeap<Integer, Integer> heapIdioma = peliculasPorIdioma.get(idiomaPelicula);
             if (heapIdioma == null) {
                 heapIdioma = new MyHeap<>(false); // max-heap
                 peliculasPorIdioma.put(idiomaPelicula, heapIdioma);
             }
 
-            // Agregar película al heap de su idioma
+
             heapIdioma.put(ratingsPelicula.size(), idPelicula);
         }
 
