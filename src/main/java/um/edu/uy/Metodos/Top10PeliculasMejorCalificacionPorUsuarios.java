@@ -50,7 +50,7 @@ public class Top10PeliculasMejorCalificacionPorUsuarios implements Consulta{
         // Mostrar top 10
         int recorrido = 0;
 
-        while (recorrido < 10 && !promedioRatings.isEmpty()) { // Agregar verificación de heap vacío
+        while (recorrido < 10 && !promedioRatings.isEmpty()) {
             Float promedioRating = promedioRatings.getKey();
             Integer peliculaid = promedioRatings.getValue();
 
