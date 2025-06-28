@@ -4,15 +4,10 @@ import um.edu.uy.Cargas.CargarDatos;
 import um.edu.uy.Entities.Genero;
 import um.edu.uy.Entities.Pelicula;
 import um.edu.uy.Entities.Rating;
-import um.edu.uy.Entities.Usuario;
-import um.edu.uy.Exceptions.EmptyHeapException;
 import um.edu.uy.TADS.HashTable.MyHash;
 import um.edu.uy.TADS.HashTable.MyHashTable;
-import um.edu.uy.TADS.Heap.MyHeap;
 import um.edu.uy.TADS.LinkedList.LinkedList;
 import um.edu.uy.TADS.LinkedList.MyLinkedList;
-
-import java.lang.reflect.Array;
 
 public class UsuarioConMasCalificacionesPorGenero implements Consulta {
     CargarDatos datos;
@@ -22,97 +17,101 @@ public class UsuarioConMasCalificacionesPorGenero implements Consulta {
     }
 
     public void usuarioConMasCalificacionesPorGenero(){
-        MyHash<Integer, Genero> almacenDeGeneros = datos.getCargaPeliculas().getGeneros();
-        LinkedList<Genero> listaDeGeneros = almacenDeGeneros.getValues();
-        MyHash<String, MyHeap<Integer, Integer>> listaUsuariosGenero = new MyHashTable<>(1000);
-        MyHeap<Integer, Genero> tempHeap = new MyHeap<>(false);
+        // Primero, probemos el enfoque directo por películas
+        MyHash<Integer, Pelicula> listaDePeliculas = datos.getPeliculas();
+        LinkedList<Pelicula> todasLasPeliculas = listaDePeliculas.getValues();
 
-        // Llenar el heap con géneros que tienen evaluaciones
-        for (int i = 0; i < listaDeGeneros.size(); i++) {
-            Genero generoActual = listaDeGeneros.get(i);
-            if (generoActual == null) {
-                continue;
-            }
-            LinkedList<Pelicula> peliculasGenero = generoActual.getListaPeliculas();
-            int totalEvaluacionesGenero = 0;
+        // Crear mapa: GeneroID -> (UsuarioID -> Cantidad)
+        MyHashTable<Integer, MyHashTable<Integer, Integer>> ratingsePorGenero = new MyHashTable<>(1001);
 
-            MyHashTable<Integer, Integer> usuarioRatingsGenero = new MyHashTable<>(1000);
-            // Contar evaluaciones del género
-            for (int j = 0; j < peliculasGenero.size(); j++) {
-                Pelicula pelicula = peliculasGenero.get(j);
-                MyLinkedList<Rating> evaluaciones = pelicula.getRatings();
-                for (int k = 0; k<evaluaciones.size(); k++) {
-                    int idUsuario = evaluaciones.get(k).getIdUsuario();
-                    if (usuarioRatingsGenero.contains(idUsuario)) {
-                        usuarioRatingsGenero.put(idUsuario, usuarioRatingsGenero.get(idUsuario) + 1);
-                    }
-                    else{
-                        usuarioRatingsGenero.put(idUsuario, 1);
+
+        // Recorrer todas las películas
+        for (int p = 0; p < todasLasPeliculas.size(); p++) {
+            Pelicula pelicula = todasLasPeliculas.get(p);
+            if (pelicula == null) continue;
+
+            // Obtener géneros de esta película
+            MyLinkedList<Genero> generosPelicula = pelicula.getGeneros();
+            if (generosPelicula == null || generosPelicula.size() == 0) continue;
+
+            // Obtener ratings de esta película
+            MyLinkedList<Rating> ratingsPelicula = pelicula.getRatings();
+            if (ratingsPelicula == null || ratingsPelicula.size() == 0) continue;
+
+            // Para cada género de esta película
+            for (int g = 0; g < generosPelicula.size(); g++) {
+                Genero genero = generosPelicula.get(g);
+                if (genero == null) continue;
+
+                int generoId = genero.getId();
+
+                // Inicializar si no existe
+                MyHashTable<Integer, Integer> contadoresPorUsuario = ratingsePorGenero.get(generoId);
+                if (contadoresPorUsuario == null) {
+                    contadoresPorUsuario = new MyHashTable<>(1001);
+                    ratingsePorGenero.put(generoId, contadoresPorUsuario);
+                }
+
+                // Para cada rating de esta película
+                for (int r = 0; r < ratingsPelicula.size(); r++) {
+                    Rating rating = ratingsPelicula.get(r);
+                    if (rating == null) continue;
+
+                    int idUsuario = rating.getIdUsuario();
+
+                    // Incrementar contador
+                    Integer conteoActual = contadoresPorUsuario.get(idUsuario);
+                    if (conteoActual == null) {
+                        contadoresPorUsuario.put(idUsuario, 1);
+                    } else {
+                        contadoresPorUsuario.put(idUsuario, conteoActual + 1);
                     }
                 }
             }
-            listaUsuariosGenero.put(generoActual.getNombre(), usuarioRatingsGenero.);
-
-            if (totalEvaluacionesGenero > 0) {
-                tempHeap.put(totalEvaluacionesGenero, generoActual);
-            }
-
         }
 
+        // Obtener lista de géneros para mostrar nombres
+        MyHash<Integer, Genero> almacenDeGeneros = datos.getCargaPeliculas().getGeneros();
+        LinkedList<Genero> listaDeGeneros = almacenDeGeneros.getValues();
+
         System.out.println("Usuarios con más calificaciones por género:");
-        MyHashTable<Integer, Integer> conteoUsuarios = new MyHashTable<>(10000);
 
-        for (int iter = 1; iter <= 20; iter++) {
-            if (tempHeap.isEmpty()) {
-                break;
-            }
+        // Mostrar resultados ordenados por género
+        for (int i = 0; i < listaDeGeneros.size(); i++) {
+            Genero genero = listaDeGeneros.get(i);
+            if (genero == null) continue;
 
-            try {
-                Genero tempGenero = tempHeap.getValue();
-                tempHeap.delete();
+            MyHashTable<Integer, Integer> contadoresPorUsuario = ratingsePorGenero.get(genero.getId());
 
-                int[] usuarioTop = {-1, 0};
-                LinkedList<Pelicula> peliculasDelGenero = tempGenero.getListaPeliculas();
+            if (contadoresPorUsuario == null || contadoresPorUsuario.size() == 0) {
+                System.out.println(genero.getNombre() + ", Sin usuarios, 0");
+            } else {
+                // Encontrar el usuario con más ratings
+                int usuarioConMasRatings = -1;
+                int maxRatings = 0;
 
-                for (int peliculaIndex = 0; peliculaIndex < peliculasDelGenero.size(); peliculaIndex++) {
-                    Pelicula pelicula = peliculasDelGenero.get(peliculaIndex);
-                    MyLinkedList<Rating> evaluaciones = pelicula.getRatings();
+                MyLinkedList<Integer> usuariosIds = contadoresPorUsuario.getKeys();
+                for (int u = 0; u < usuariosIds.size(); u++) {
+                    int idUsuario = usuariosIds.get(u);
+                    Integer cantidadRatings = contadoresPorUsuario.get(idUsuario);
 
-                    for (int evalIndex = 0; evalIndex < evaluaciones.size(); evalIndex++) {
-                        Rating evaluacion = evaluaciones.get(evalIndex);
-                        int userId = evaluacion.getIdUsuario();
-                        if (userId == 0) continue;
-
-                        int nuevoConteo;
-                        Integer conteoActual = conteoUsuarios.get(userId);
-                        if (conteoActual == null) {
-                            nuevoConteo = 1;
-                            conteoUsuarios.put(userId, nuevoConteo);
-                        } else {
-                            nuevoConteo = conteoActual + 1;
-                            conteoUsuarios.put(userId, nuevoConteo);
-                        }
-
-                        if (nuevoConteo > usuarioTop[1]) {
-                            usuarioTop[1] = nuevoConteo;
-                            usuarioTop[0] = userId;
-                        }
+                    if (cantidadRatings != null && cantidadRatings > maxRatings) {
+                        maxRatings = cantidadRatings;
+                        usuarioConMasRatings = idUsuario;
                     }
                 }
 
-                System.out.println(usuarioTop[0] + ", " + tempGenero.getNombre() + ", " + usuarioTop[1]);
-
-                // Limpiar el mapa para el siguiente género
-                conteoUsuarios = new MyHashTable<>(10000);
-
-            } catch (EmptyHeapException e) {
-                break;
+                System.out.println( usuarioConMasRatings +  ", " +genero.getNombre() +", " + maxRatings);
             }
         }
     }
 
     @Override
     public void realizarConsulta() {
+        long inicio = System.currentTimeMillis();
+
         this.usuarioConMasCalificacionesPorGenero();
+
+        System.out.println("Tiempo de ejecución: " + (System.currentTimeMillis() - inicio) + "ms");
     }
 }
